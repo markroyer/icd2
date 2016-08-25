@@ -1,0 +1,75 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>edu.umaine.cs.icd2</groupId>
+	<artifactId>edu.umaine.cs.icd2.parent</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<properties>
+		<tycho-version>0.24.0</tycho-version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	<build>
+		<plugins>
+			<plugin>
+				<!-- enable the Tycho build extension -->
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-maven-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<extensions>true</extensions>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<environments>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>macosx</os>
+							<ws>cocoa</ws>
+							<arch>x86_64</arch>
+						</environment>
+					</environments>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<repositories>
+		<!-- configure p2 repository to resolve against -->
+		<repository>
+			<id>eclipse-project-mars</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/eclipse/updates/4.5</url>
+		</repository>
+		<repository>
+			<id>umaine</id>
+			<layout>p2</layout>
+			<url>http://p2:2R3p0!@plum.umcs.maine.edu/~mroyer/p2.repositories/updates</url>
+		</repository>
+	</repositories>
+	<modules>
+		<module>../edu.umaine.cs.icd2</module>
+		<module>../edu.umaine.cs.icd2.feature</module>
+		<module>../edu.umaine.cs.icd2.repository</module>
+		<module>../edu.umaine.cs.icd2.tests</module>
+
+
+
+		<module>../edu.umaine.cs.icd2.jre.feature</module>
+
+
+
+
+	</modules>
+</project>

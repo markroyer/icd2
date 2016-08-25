@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/edu.umaine.cs.icd2.feature_1.0.0.qualifier.jar" id="edu.umaine.cs.icd2.feature" version="1.0.0.qualifier">
+      <category name="edu.umaine.cs.icd2"/>
+   </feature>
+   <category-def name="edu.umaine.cs.icd2" label="ICD2 Category">
+      <description>
+         ICD2 Category Description
+      </description>
+   </category-def>
+</site>

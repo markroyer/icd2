@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            name="ICD2"
+            application="org.eclipse.e4.ui.workbench.swt.E4Application">
+         <property
+               name="lifeCycleURI"
+               value="bundleclass://edu.umaine.cs.icd2/icd2.E4LifeCycle">
+         </property>
+         <property
+               name="appName"
+               value="ICD2">
+         </property>
+      </product>
+   </extension>
+   <extension
+         id="expressions"
+         point="org.eclipse.core.expressions.definitions">
+         
+		<definition id="edu.umaine.cs.icd2.DatingProject.selectionSet">
+        	<with variable="itemAtMouseClick">
+            	<instanceof value="icd2.model.DatingProject"></instanceof>
+         	</with>
+        </definition>
+        <definition id="edu.umaine.cs.icd2.CoreData.selectionSet">
+        	<with variable="itemAtMouseClick">
+            	<instanceof value="icd2.model.CoreData"></instanceof>
+         	</with>
+        </definition>
+         <definition id="edu.umaine.cs.icd2.Core.selectionSet">
+        	<with variable="itemAtMouseClick">
+            	<instanceof value="icd2.model.Core"></instanceof>
+         	</with>
+        </definition>
+        <definition id="edu.umaine.cs.icd2.DepthYear.selectionSet">
+        	<with variable="itemAtMouseClick">
+            	<instanceof value="icd2.model.DepthYear"></instanceof>
+         	</with>
+        </definition>
+   </extension>
+
+</plugin>

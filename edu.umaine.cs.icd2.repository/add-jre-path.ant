@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== 
+    
+	Specifies in the Info.plist that the build should use the embedded JVM.
+                   
+     Mark Royer                                                                
+     ====================================================================== -->
+<project name="project" default="default">
+	<description>
+            Specifies in the Info.plist that the build should use the embedded JVM.
+    </description>
+
+	<taskdef name="xmltask" classname="com.oopsconsultancy.xmltask.ant.XmlTask" classpath="xmltask.jar" />
+
+	<!-- ================================= 
+          target: default              
+         ================================= -->
+	<target name="default" description="description">
+		<property name="mac.plist" location="target/products/edu.umaine.cs.icd2.product/macosx/cocoa/x86_64/ICD2.app/Contents/Info.plist" />
+
+		<echo message="************** Updating Info.plist file ****************" />
+		<echo message="File is ${mac.plist}" />
+		<echo message="********************************************************" />
+
+		<xmltask source="${mac.plist}" dest="${mac.plist}">
+			<insert path="/plist/dict/key[text()='Eclipse']/following::array/*[1]" position="before">
+				<![CDATA[
+			<string>-vm</string>
+			<string>../Eclipse/Contents/Home/lib/jli/libjli.dylib</string>
+    ]]>
+    		</insert>
+	</xmltask>
+
+	<!-- Just re-zip the product files ... -->
+
+	<zip destfile="target/products/edu.umaine.cs.icd2.product-macosx.cocoa.x86_64.zip" basedir="target/products/edu.umaine.cs.icd2.product/macosx/cocoa/x86_64" />
+
+</target>
+
+</project>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmlns:ui="http://www.eclipse.org/ui/2010/UIModel/application/ui" xmi:id="_jM8n4DRyEeSQreHnSbWKdg" elementId="org.eclipse.e4.ide.application" bindingContexts="_jM8n6TRyEeSQreHnSbWKdg">
+  <children xsi:type="basic:TrimmedWindow" xmi:id="_jM8n4TRyEeSQreHnSbWKdg" label="ICD" iconURI="platform:/plugin/edu.umaine.cs.icd2/icons/frame_icon.png" x="460" y="120" width="1000" height="800">
+    <children xsi:type="advanced:PerspectiveStack" xmi:id="_jM9PAjRyEeSQreHnSbWKdg" elementId="edu.umaine.cs.perspectiveStack.mainStack">
+      <children xsi:type="advanced:Perspective" xmi:id="_jM9PAzRyEeSQreHnSbWKdg" elementId="edu.umaine.cs.perspective.main">
+        <children xsi:type="basic:PartSashContainer" xmi:id="_QaQPUDqQEeS44YPCkr4EFA" elementId="icd2.partsashcontainer.0" horizontal="true">
+          <children xsi:type="basic:PartSashContainer" xmi:id="_jM9PBDRyEeSQreHnSbWKdg" containerData="85" horizontal="true">
+            <children xsi:type="basic:PartStack" xmi:id="_bjvTcDR1EeSQreHnSbWKdg" elementId="icd2.partstack.0" containerData="20">
+              <children xsi:type="basic:Part" xmi:id="_e6IAcDR1EeSQreHnSbWKdg" elementId="icd2.part.coreData" contributionURI="bundleclass://edu.umaine.cs.icd2/icd2.parts.WorkspaceView" label="Core Data" iconURI="platform:/plugin/edu.umaine.cs.icd2/icons/faenza/view-list-compact16x16.png" tooltip="Core Data">
+                <menus xsi:type="menu:PopupMenu" xmi:id="_h_9z0Dt3EeS44YPCkr4EFA" elementId="icd2.popupmenu.leftTree">
+                  <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_1lA4MO8DEeWanehvTl9f5w"/>
+                  <children xsi:type="menu:HandledMenuItem" xmi:id="_n8KFcDt3EeS44YPCkr4EFA" elementId="icd2.handledmenuitem.newProject" label="New Project" tooltip="New Project" command="_jAgAcDqKEeS44YPCkr4EFA"/>
+                  <children xsi:type="menu:HandledMenuItem" xmi:id="_QVyXEET5EeSlZI62B5TpCw" elementId="icd2.handledmenuitem.addCore" label="Add Core" tooltip="Add a core to the workspace" command="_jM9O8jRyEeSQreHnSbWKdg">
+                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_G41YgKEoEeWvm4FLM73lhw" coreExpressionId="edu.umaine.cs.icd2.CoreData.selectionSet"/>
+                  </children>
+                  <children xsi:type="menu:HandledMenuItem" xmi:id="_oCD3UEDtEeWtGsa1xp-8ow" elementId="icd2.handledmenuitem.removeProject" label="Remove Project" tooltip="Removes a project from the workspace" command="_AelGAEDtEeWtGsa1xp-8ow">
+                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_V0ldkKEREeWiWetxWTn22Q" coreExpressionId="edu.umaine.cs.icd2.DatingProject.selectionSet"/>
+                  </children>
+                  <children xsi:type="menu:HandledMenuItem" xmi:id="_1M7B8O77EeWanehvTl9f5w" elementId="edu.umaine.cs.icd2.handledmenuitem.removeCore" label="Remove Core" tooltip="Removes a core from the workspace" command="_Fj0-8O78EeWanehvTl9f5w">
+                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_B3w84O78EeWanehvTl9f5w" coreExpressionId="edu.umaine.cs.icd2.Core.selectionSet"/>
+                  </children>
+                  <children xsi:type="menu:HandledMenuItem" xmi:id="_I9G24GraEeap1IV73wO7HQ" elementId="edu.umaine.cs.icd2.handledmenuitem.removeDepthMarker" label="Remove Depth Marker" tooltip="Removes the marker from the current date session" command="_r9a0cGrZEeap1IV73wO7HQ">
+                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_QnPRAGraEeap1IV73wO7HQ" coreExpressionId="edu.umaine.cs.icd2.DepthYear.selectionSet"/>
+                  </children>
+                </menus>
+              </children>
+            </children>
+            <children xsi:type="basic:PartStack" xmi:id="_jM9PBTRyEeSQreHnSbWKdg" elementId="icd2.partstack.center" containerData="80">
+              <tags>NoMove</tags>
+              <tags>NoAutoCollapse</tags>
+            </children>
+          </children>
+          <children xsi:type="basic:PartStack" xmi:id="_IOHUUDqQEeS44YPCkr4EFA" elementId="icd2.partstack.1" containerData="25">
+            <children xsi:type="basic:Part" xmi:id="_K9XI0DqQEeS44YPCkr4EFA" elementId="icd2.part.details" contributionURI="bundleclass://edu.umaine.cs.icd2/icd2.parts.DetailsView" label="Details" iconURI="platform:/plugin/edu.umaine.cs.icd2/icons/faenza/stock_search16x16.png" tooltip="Details"/>
+          </children>
+        </children>
+      </children>
+    </children>
+    <mainMenu xmi:id="_jM9O-zRyEeSQreHnSbWKdg" elementId="menu:org.eclipse.ui.main.menu">
+      <children xsi:type="menu:Menu" xmi:id="_jM9O_DRyEeSQreHnSbWKdg" elementId="edu.umaine.cs.icd2.menu.project" label="File">
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_jM9O_TRyEeSQreHnSbWKdg" label="Add Core" iconURI="platform:/plugin/edu.umaine.cs.icd2/icons/faenza/gtk-open24x24.png" command="_jM9O8jRyEeSQreHnSbWKdg"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_jM9O_jRyEeSQreHnSbWKdg" label="Save" iconURI="platform:/plugin/edu.umaine.cs.icd2/icons/faenza/gtk-save24x24.png" command="_jM9O9TRyEeSQreHnSbWKdg"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_jM9O_zRyEeSQreHnSbWKdg" label="Quit" command="_jM8n7DRyEeSQreHnSbWKdg"/>
+      </children>
+      <children xsi:type="menu:Menu" xmi:id="_ydiO0DqNEeS44YPCkr4EFA" elementId="icd2.menu.project" label="Project">
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_1gPx4DqNEeS44YPCkr4EFA" elementId="icd2.handledmenuitem.newProject" label="New Project" command="_jAgAcDqKEeS44YPCkr4EFA"/>
+      </children>
+      <children xsi:type="menu:Menu" xmi:id="_k_RQcMuBEeW8OOMiin5oNQ" elementId="edu.umaine.cs.icd2.menu.window" label="Window">
+        <children xsi:type="menu:Menu" xmi:id="_5E7-MMuBEeW8OOMiin5oNQ" elementId="edu.umaine.cs.icd2.menu.perspective" label="Perspective">
+          <children xsi:type="menu:HandledMenuItem" xmi:id="_zc-QIMuBEeW8OOMiin5oNQ" elementId="edu.umaine.cs.icd2.handledmenuitem.resetPerspective" label="Reset Perspective..." command="_fGgQ0MuCEeW8OOMiin5oNQ"/>
+        </children>
+      </children>
+      <children xsi:type="menu:Menu" xmi:id="_jM9PADRyEeSQreHnSbWKdg" elementId="edu.umaine.cs.icd2.menu.help" label="Help">
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_jM9PATRyEeSQreHnSbWKdg" label="About" command="_jM9O-DRyEeSQreHnSbWKdg"/>
+      </children>
+    </mainMenu>
+    <trimBars xmi:id="_jM9PBzRyEeSQreHnSbWKdg">
+      <children xsi:type="menu:ToolBar" xmi:id="_jM9PCDRyEeSQreHnSbWKdg" elementId="toolbar:org.eclipse.ui.main.toolbar">
+        <children xsi:type="menu:HandledToolItem" xmi:id="_sed_oDiGEeWLKOlxnr8e9w" elementId="toolbar.undo" label="Undo" iconURI="platform:/plugin/edu.umaine.cs.icd2/icons/faenza/undo32x32.png" tooltip="Undo" command="_e5GgsDiHEeWLKOlxnr8e9w"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_-w2ewD_BEeWtGsa1xp-8ow" elementId="toolbar.redo" label="Redo" iconURI="platform:/plugin/edu.umaine.cs.icd2/icons/faenza/redo32x32.png" tooltip="Redo" command="_i79bgD_BEeWtGsa1xp-8ow"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_jM9PCTRyEeSQreHnSbWKdg" elementId="toolbar.open" label="Add Core" iconURI="platform:/plugin/edu.umaine.cs.icd2/icons/faenza/add32x32.png" command="_jM9O8jRyEeSQreHnSbWKdg"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_7lpC0DqNEeS44YPCkr4EFA" elementId="icd2.handledtoolitem.newProject" label="New Project" iconURI="platform:/plugin/edu.umaine.cs.icd2/icons/faenza/gtk-open32x32.png" command="_jAgAcDqKEeS44YPCkr4EFA"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_jM9PCjRyEeSQreHnSbWKdg" elementId="toolbar.save" label="Save" iconURI="platform:/plugin/edu.umaine.cs.icd2/icons/faenza/gtk-save-as32x32.png" command="_jM9O9TRyEeSQreHnSbWKdg"/>
+      </children>
+    </trimBars>
+  </children>
+  <handlers xmi:id="_jM8n7TRyEeSQreHnSbWKdg" elementId="icd2.handler.quitCommand" contributionURI="bundleclass://edu.umaine.cs.icd2/icd2.handlers.QuitHandler" command="_jM8n7DRyEeSQreHnSbWKdg"/>
+  <handlers xmi:id="_jM9O8zRyEeSQreHnSbWKdg" elementId="icd2.handler.openCommand" contributionURI="bundleclass://edu.umaine.cs.icd2/icd2.handlers.AddNewCoreHandler" command="_jM9O8jRyEeSQreHnSbWKdg"/>
+  <handlers xmi:id="_jM9O9jRyEeSQreHnSbWKdg" elementId="icd2.handler.saveCommand" contributionURI="bundleclass://edu.umaine.cs.icd2/icd2.handlers.SaveHandler" command="_jM9O9TRyEeSQreHnSbWKdg"/>
+  <handlers xmi:id="_jM9O-TRyEeSQreHnSbWKdg" elementId="icd2.handler.aboutCommand" contributionURI="bundleclass://edu.umaine.cs.icd2/icd2.handlers.AboutHandler" command="_jM9O-DRyEeSQreHnSbWKdg"/>
+  <handlers xmi:id="_oykswDqKEeS44YPCkr4EFA" elementId="icd2.handler.newProject" contributionURI="bundleclass://edu.umaine.cs.icd2/icd2.handlers.NewProject" command="_jAgAcDqKEeS44YPCkr4EFA"/>
+  <handlers xmi:id="_v-4V4DiHEeWLKOlxnr8e9w" elementId="icd2.handler.undo" contributionURI="bundleclass://edu.umaine.cs.icd2/icd2.handlers.UndoHandler" command="_e5GgsDiHEeWLKOlxnr8e9w"/>
+  <handlers xmi:id="_fa-BAD_BEeWtGsa1xp-8ow" elementId="icd2.handler.redo" contributionURI="bundleclass://edu.umaine.cs.icd2/icd2.handlers.RedoHandler" command="_i79bgD_BEeWtGsa1xp-8ow"/>
+  <handlers xmi:id="_InVV0EDtEeWtGsa1xp-8ow" elementId="icd2.handler.removeProject" contributionURI="bundleclass://edu.umaine.cs.icd2/icd2.handlers.RemoveProjectHandler" command="_AelGAEDtEeWtGsa1xp-8ow"/>
+  <handlers xmi:id="_bhHegMuCEeW8OOMiin5oNQ" elementId="edu.umaine.cs.icd2.handler.resetPerspective" contributionURI="bundleclass://edu.umaine.cs.icd2/icd2.handlers.ResetPerspectiveHandler" command="_fGgQ0MuCEeW8OOMiin5oNQ"/>
+  <handlers xmi:id="_ySvEEMuhEeWBjM0BqrUZnw" elementId="edu.umaine.cs.icd2.handler.0" contributionURI="bundleclass://edu.umaine.cs.icd2/icd2.handlers.CropPlottedLinesHandler" command="_ucH-4MuhEeWBjM0BqrUZnw"/>
+  <handlers xmi:id="_F5qn4O8DEeWanehvTl9f5w" elementId="edu.umaine.cs.icd2.handler.removeCore" contributionURI="bundleclass://edu.umaine.cs.icd2/icd2.handlers.RemoveCoreHandler" command="_Fj0-8O78EeWanehvTl9f5w"/>
+  <handlers xmi:id="_bYJrUGrZEeap1IV73wO7HQ" elementId="edu.umaine.cs.icd2.handler.removeDepthMarker" contributionURI="bundleclass://edu.umaine.cs.icd2/icd2.handlers.RemoveDepthMarker" command="_r9a0cGrZEeap1IV73wO7HQ"/>
+  <bindingTables xmi:id="_jM9O8DRyEeSQreHnSbWKdg" bindingContext="_jM8n6TRyEeSQreHnSbWKdg">
+    <bindings xmi:id="_jM9O8TRyEeSQreHnSbWKdg" elementId="edu.umaine.cs.icd2.keybinding.quit" keySequence="M1+Q" command="_jM8n7DRyEeSQreHnSbWKdg">
+      <tags>type:user</tags>
+    </bindings>
+    <bindings xmi:id="_jM9O9DRyEeSQreHnSbWKdg" elementId="edu.umaine.cs.icd2.keybinding.newCore" keySequence="M1+M2+N" command="_jM9O8jRyEeSQreHnSbWKdg">
+      <tags>type:user</tags>
+    </bindings>
+    <bindings xmi:id="_jM9O9zRyEeSQreHnSbWKdg" elementId="edu.umaine.cs.icd2.keybinding.save" keySequence="M1+S" command="_jM9O9TRyEeSQreHnSbWKdg">
+      <tags>type:user</tags>
+    </bindings>
+    <bindings xmi:id="_jM9O-jRyEeSQreHnSbWKdg" elementId="edu.umaine.cs.icd2.keybinding.about" keySequence="M1+M2+A" command="_jM9O-DRyEeSQreHnSbWKdg">
+      <tags>type:user</tags>
+    </bindings>
+    <bindings xmi:id="_kLEGkDrAEeS44YPCkr4EFA" elementId="edu.umaine.cs.icd2.keybinding.newProject" keySequence="M1+N" command="_jAgAcDqKEeS44YPCkr4EFA">
+      <tags>type:user</tags>
+    </bindings>
+    <bindings xmi:id="_4N2MUDiQEeWLKOlxnr8e9w" elementId="edu.umaine.cs.icd2.keybinding.undo" keySequence="M1+Z" command="_e5GgsDiHEeWLKOlxnr8e9w">
+      <tags>type:user</tags>
+    </bindings>
+    <bindings xmi:id="_LjZHsD_DEeWtGsa1xp-8ow" elementId="edu.umaine.cs.icd2.keybinding.redo" keySequence="M1+Y" command="_i79bgD_BEeWtGsa1xp-8ow"/>
+    <bindings xmi:id="_YwXc0EEXEeWtGsa1xp-8ow" elementId="edu.umaine.cs.icd2.keybinding.delete" keySequence="DEL" command="_AelGAEDtEeWtGsa1xp-8ow">
+      <tags>type:user</tags>
+    </bindings>
+  </bindingTables>
+  <rootContext xmi:id="_jM8n6TRyEeSQreHnSbWKdg" elementId="org.eclipse.ui.contexts.dialogAndWindow" name="In Dialog and Windows">
+    <children xmi:id="_jM8n6jRyEeSQreHnSbWKdg" elementId="org.eclipse.ui.contexts.window" name="In Windows"/>
+    <children xmi:id="_jM8n6zRyEeSQreHnSbWKdg" elementId="org.eclipse.ui.contexts.dialog" name="In Dialogs"/>
+  </rootContext>
+  <descriptors xmi:id="_0NP0wDqUEeS44YPCkr4EFA" elementId="icd2.partdescriptor.project" label="Project" iconURI="platform:/plugin/edu.umaine.cs.icd2/icons/faenza/emblem-marketing16x16.png" tooltip="Dating Project" closeable="true" dirtyable="true" contributionURI="bundleclass://edu.umaine.cs.icd2/icd2.parts.DatingProjectView">
+    <tags>NoMove</tags>
+    <tags>removeOnHide</tags>
+    <menus xsi:type="menu:PopupMenu" xmi:id="_Y6Q_8MuhEeWBjM0BqrUZnw" elementId="edu.umaine.cs.icd2.popupmenu.chart" label="">
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_cNBxMMuhEeWBjM0BqrUZnw" elementId="edu.umaine.cs.icd2.handledmenuitem.cropplottedlines" label="Crop Plotted Lines" type="Check" command="_ucH-4MuhEeWBjM0BqrUZnw"/>
+    </menus>
+  </descriptors>
+  <commands xmi:id="_jM8n7DRyEeSQreHnSbWKdg" elementId="org.eclipse.ui.file.exit" commandName="Quit" description="Exit ICD Application"/>
+  <commands xmi:id="_jM9O8jRyEeSQreHnSbWKdg" elementId="icd2.addNewCore" commandName="Add New Core" description="Add a core file"/>
+  <commands xmi:id="_jM9O9TRyEeSQreHnSbWKdg" elementId="org.eclipse.ui.file.save" commandName="Save"/>
+  <commands xmi:id="_jM9O-DRyEeSQreHnSbWKdg" elementId="org.eclipse.ui.help.aboutAction" commandName="About"/>
+  <commands xmi:id="_jAgAcDqKEeS44YPCkr4EFA" elementId="icd2.command.newProject" commandName="New Project"/>
+  <commands xmi:id="_e5GgsDiHEeWLKOlxnr8e9w" elementId="org.eclipse.ui.edit.undo" commandName="Undo"/>
+  <commands xmi:id="_i79bgD_BEeWtGsa1xp-8ow" elementId="org.eclipse.ui.edit.redo" commandName="Redo"/>
+  <commands xmi:id="_AelGAEDtEeWtGsa1xp-8ow" elementId="icd2.command.removeProject" commandName="Remove Project"/>
+  <commands xmi:id="_fGgQ0MuCEeW8OOMiin5oNQ" elementId="edu.umaine.cs.icd2.command.resetPerspective" commandName="Reset Perspective"/>
+  <commands xmi:id="_ucH-4MuhEeWBjM0BqrUZnw" elementId="edu.umaine.cs.icd2.command.cropplottedlines" commandName="Crop Plotted Lines" description="Crop plot lines to subplot"/>
+  <commands xmi:id="_Fj0-8O78EeWanehvTl9f5w" elementId="edu.umaine.cs.icd2.command.removeCore" commandName="Remove Core" description="Remove the core from the workspace"/>
+  <commands xmi:id="_r9a0cGrZEeap1IV73wO7HQ" elementId="edu.umaine.cs.icd2.command.removeDepthMarker" commandName="Remove Depth Marker" description="Remove the depth marker from the current session"/>
+  <addons xmi:id="_HUPIIEUnEeSlZI62B5TpCw" elementId="icd2.addon.0" contributionURI="bundleclass://edu.umaine.cs.icd2/icd2.addon.CreateNewProject"/>
+  <addons xmi:id="_UyZcwNocEeSP_dvThRp0FA" elementId="icd2.addon.PartsUtil" contributionURI="bundleclass://edu.umaine.cs.icd2/icd2.parts.PartsUtil"/>
+  <addons xmi:id="_jM8n4jRyEeSQreHnSbWKdg" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
+  <addons xmi:id="_jM8n4zRyEeSQreHnSbWKdg" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
+  <addons xmi:id="_jM8n5DRyEeSQreHnSbWKdg" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>
+  <addons xmi:id="_jM8n5TRyEeSQreHnSbWKdg" elementId="org.eclipse.e4.ui.workbench.commands.model" contributionURI="bundleclass://org.eclipse.e4.ui.workbench/org.eclipse.e4.ui.internal.workbench.addons.CommandProcessingAddon"/>
+  <addons xmi:id="_jM8n5jRyEeSQreHnSbWKdg" elementId="org.eclipse.e4.ui.workbench.handler.model" contributionURI="bundleclass://org.eclipse.e4.ui.workbench/org.eclipse.e4.ui.internal.workbench.addons.HandlerProcessingAddon"/>
+  <addons xmi:id="_jM8n5zRyEeSQreHnSbWKdg" elementId="org.eclipse.e4.ui.workbench.contexts.model" contributionURI="bundleclass://org.eclipse.e4.ui.workbench/org.eclipse.e4.ui.internal.workbench.addons.ContextProcessingAddon"/>
+  <addons xmi:id="_eUFlYEHBEeSa_sGEmJFJDg" elementId="org.eclipse.e4.ui.workbench.addons.minmax.model" contributionURI="bundleclass://org.eclipse.e4.ui.workbench.addons.swt/org.eclipse.e4.ui.workbench.addons.minmax.MinMaxAddon"/>
+  <addons xmi:id="_eUFlYUHBEeSa_sGEmJFJDg" elementId="org.eclipse.e4.ui.workbench.addons.dndaddon.model" contributionURI="bundleclass://org.eclipse.e4.ui.workbench.addons.swt/org.eclipse.e4.ui.workbench.addons.dndaddon.DnDAddon"/>
+  <addons xmi:id="_eUFlYkHBEeSa_sGEmJFJDg" elementId="org.eclipse.e4.ui.workbench.addons.cleanupaddon.model" contributionURI="bundleclass://org.eclipse.e4.ui.workbench.addons.swt/org.eclipse.e4.ui.workbench.addons.cleanupaddon.CleanupAddon"/>
+  <addons xmi:id="_jM8n6DRyEeSQreHnSbWKdg" elementId="org.eclipse.e4.ui.workbench.bindings.model" contributionURI="bundleclass://org.eclipse.e4.ui.workbench.swt/org.eclipse.e4.ui.workbench.swt.util.BindingProcessingAddon"/>
+</application:Application>
