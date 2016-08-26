@@ -55,7 +55,7 @@
 		<repository>
 			<id>umaine</id>
 			<layout>p2</layout>
-			<url>http://p2:2R3p0!@plum.umcs.maine.edu/~mroyer/p2.repositories/updates</url>
+			<url>http://p2:FIXME/~mroyer/p2.repositories/updates</url>
 		</repository>
 	</repositories>
 	<modules>
