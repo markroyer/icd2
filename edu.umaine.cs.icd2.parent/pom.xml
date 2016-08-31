@@ -6,7 +6,7 @@
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<properties>
-		<tycho-version>0.24.0</tycho-version>
+		<tycho-version>0.26.0</tycho-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<build>
@@ -48,14 +48,14 @@
 	<repositories>
 		<!-- configure p2 repository to resolve against -->
 		<repository>
-			<id>eclipse-project-mars</id>
+			<id>eclipse-project-neon</id>
 			<layout>p2</layout>
-			<url>http://download.eclipse.org/eclipse/updates/4.5</url>
+			<url>http://download.eclipse.org/eclipse/updates/4.6</url>
 		</repository>
 		<repository>
-			<id>umaine</id>
+			<id>royer</id>
 			<layout>p2</layout>
-			<url>http://p2:FIXME/~mroyer/p2.repositories/updates</url>
+			<url>https://rawgit.com/markroyer/p2-repositories/master</url>
 		</repository>
 	</repositories>
 	<modules>

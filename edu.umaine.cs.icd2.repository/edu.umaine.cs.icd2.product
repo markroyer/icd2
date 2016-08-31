@@ -136,11 +136,12 @@
    <features>
       <feature id="edu.umaine.cs.icd2.feature" version="1.0.0.qualifier"/>
       <feature id="edu.umaine.cs.icd2.jre.feature" version="1.0.0.qualifier"/>
-      <feature id="ncsa.hdf.hdfjava.feature" version="2.11.0.v20150725-0116"/>
       <feature id="org.eclipse.emf.ecore"/>
       <feature id="org.eclipse.emf.common"/>
       <feature id="org.eclipse.e4.rcp"/>
       <feature id="org.eclipse.rcp"/>
+      <feature id="edu.umaine.cs.hdfjavaio.feature"/>
+      <feature id="ncsa.hdf.hdfjava.feature"/>
    </features>
 
    <configurations>

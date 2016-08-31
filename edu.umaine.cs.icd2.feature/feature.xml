@@ -16,6 +16,10 @@
       [Enter License Description here.]
    </license>
 
+   <requires>
+      <import feature="edu.umaine.cs.hdfjavaio.feature" version="1.0.0" match="greaterOrEqual"/>
+   </requires>
+
    <plugin
          id="edu.umaine.cs.icd2"
          download-size="0"
