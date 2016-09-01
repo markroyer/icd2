@@ -61,7 +61,7 @@ public class PreferenceUtils {
 	}
 
 	public Preferences getApplicationPreferences() {
-		return Preferences.userRoot().node("edu.umaine.cs.icd2");
+		return Preferences.userNodeForPackage(PreferenceUtils.class);
 	}
 
 	public List<Pair<String, String>> getWorkspacesAccessTimes() {
