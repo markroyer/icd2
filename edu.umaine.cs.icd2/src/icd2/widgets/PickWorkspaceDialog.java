@@ -70,33 +70,23 @@ public class PickWorkspaceDialog extends TitleAreaDialog {
 					new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 			label.setText("Workspace Root Path");
 
-			// combo in middle
 			workspaceCombo = new ComboViewer(inner, SWT.READ_ONLY);
-			// workspaceCombo = new Combo(inner, SWT.BORDER);
-			// workspaceCombo.setLayoutData(new
-			// GridData(GridData.GRAB_HORIZONTAL));
-
-			// for (Pair<String,String> last : wsAccessTimes)
-			// workspaceCombo.add(last.getFirst() + " (" + last.getSecond() +
-			// ")");
-			// workspaceCombo.select(0);
 
 			workspaceCombo
 					.setContentProvider(ArrayContentProvider.getInstance());
 			workspaceCombo.setInput(wsAccessTimes);
 
 			workspaceCombo.setLabelProvider(new LabelProvider() {
-				SimpleDateFormat df = new SimpleDateFormat();
-
 				@Override
 				public String getText(Object element) {
-					Pair<String, String> p = (Pair) element;
+					@SuppressWarnings("unchecked")
+					Pair<String, String> p = (Pair<String, String>) element;
 					String date = p.getValue();
 					try {
 						date = new Date(Long.parseLong(date)).toString();
 					} catch (NumberFormatException e) {
 						logger.debug(
-								"{} is not a valid long, so it will not be converted to a date.",
+								"'{}' is not a valid long, so it will not be converted to a date.",
 								date);
 					}
 
@@ -108,7 +98,6 @@ public class PickWorkspaceDialog extends TitleAreaDialog {
 			workspaceCombo.setSelection(
 					new StructuredSelection(wsAccessTimes.get(0)), true);
 
-			// browse button on right
 			Button browse = new Button(inner, SWT.PUSH);
 			browse.setSize(81, 28);
 			browse.setText("Browse...");
@@ -122,7 +111,6 @@ public class PickWorkspaceDialog extends TitleAreaDialog {
 					dd.setMessage("Select a folder for the workspace.");
 					String pick = dd.open();
 					if (pick != null) {
-						// workspaceCombo.setText(pick);
 						Optional<Pair<String, String>> match = wsAccessTimes
 								.stream().filter(a -> a.getKey().equals(pick))
 								.findAny();
@@ -132,7 +120,6 @@ public class PickWorkspaceDialog extends TitleAreaDialog {
 						else {
 							Pair<String, String> newPair = new Pair<>(pick,
 									"never used");
-							// wsAccessTimes.add(0, newPair);
 							workspaceCombo.insert(newPair, 0);
 							selection = new StructuredSelection(newPair);
 						}
@@ -141,8 +128,7 @@ public class PickWorkspaceDialog extends TitleAreaDialog {
 					}
 				}
 			});
-
-			// checkbox below
+			
 			Button rememberWorkspaceButton = new Button(inner, SWT.CHECK);
 			rememberWorkspaceButton.setLayoutData(
 					new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
@@ -159,6 +145,7 @@ public class PickWorkspaceDialog extends TitleAreaDialog {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void okPressed() {
 
