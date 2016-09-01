@@ -1,13 +1,12 @@
 package icd2.widgets;
 
 import java.io.File;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.commons.math3.util.Pair;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
@@ -28,6 +27,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import icd2.PreferenceUtils.Pair;
 import icd2.Setup;
 import icd2.model.Workspace;
 
@@ -71,8 +71,7 @@ public class PickWorkspaceDialog extends TitleAreaDialog {
 			label.setText("Workspace Root Path");
 
 			// combo in middle
-			workspaceCombo = new ComboViewer(inner,
-					SWT.READ_ONLY);
+			workspaceCombo = new ComboViewer(inner, SWT.READ_ONLY);
 			// workspaceCombo = new Combo(inner, SWT.BORDER);
 			// workspaceCombo.setLayoutData(new
 			// GridData(GridData.GRAB_HORIZONTAL));
@@ -88,23 +87,26 @@ public class PickWorkspaceDialog extends TitleAreaDialog {
 
 			workspaceCombo.setLabelProvider(new LabelProvider() {
 				SimpleDateFormat df = new SimpleDateFormat();
+
 				@Override
 				public String getText(Object element) {
-					Pair<String,String> p = (Pair)element;
-					String date = p.getSecond();
+					Pair<String, String> p = (Pair) element;
+					String date = p.getValue();
 					try {
-						date = df.parse(date).toString();
-					} catch (ParseException e) {
-						// Unable to format
+						date = new Date(Long.parseLong(date)).toString();
+					} catch (NumberFormatException e) {
+						logger.debug(
+								"{} is not a valid long, so it will not be converted to a date.",
+								date);
 					}
-					
-					return p.getFirst() + " (" + date + ")";
-					
-					
+
+					return p.getKey() + " (" + date + ")";
+
 				}
 			});
-			
-			workspaceCombo.setSelection(new StructuredSelection(wsAccessTimes.get(0)), true);
+
+			workspaceCombo.setSelection(
+					new StructuredSelection(wsAccessTimes.get(0)), true);
 
 			// browse button on right
 			Button browse = new Button(inner, SWT.PUSH);
@@ -120,18 +122,21 @@ public class PickWorkspaceDialog extends TitleAreaDialog {
 					dd.setMessage("Select a folder for the workspace.");
 					String pick = dd.open();
 					if (pick != null) {
-//						workspaceCombo.setText(pick);
-						Optional<Pair<String, String>> match = wsAccessTimes.stream().filter(a-> a.getFirst().equals(pick)).findAny();
+						// workspaceCombo.setText(pick);
+						Optional<Pair<String, String>> match = wsAccessTimes
+								.stream().filter(a -> a.getKey().equals(pick))
+								.findAny();
 						ISelection selection;
 						if (match.isPresent())
 							selection = new StructuredSelection(match.get());
 						else {
-							Pair<String, String> newPair = new Pair<>(pick, "never used");
-//							wsAccessTimes.add(0, newPair);
-							workspaceCombo.insert(newPair,0);
+							Pair<String, String> newPair = new Pair<>(pick,
+									"never used");
+							// wsAccessTimes.add(0, newPair);
+							workspaceCombo.insert(newPair, 0);
 							selection = new StructuredSelection(newPair);
 						}
-							
+
 						workspaceCombo.setSelection(selection);
 					}
 				}
@@ -160,16 +165,14 @@ public class PickWorkspaceDialog extends TitleAreaDialog {
 		ISelection iSelect = workspaceCombo.getSelection();
 
 		if (iSelect != null) {
-		
-			selectedPath = ((Pair<String,String>)((StructuredSelection)iSelect).getFirstElement()).getFirst();
-			
+
+			selectedPath = ((Pair<String, String>) ((StructuredSelection) iSelect)
+					.getFirstElement()).getKey();
+
 			if (isValid(selectedPath)) {
 				selection = new Setup().getWorkspace(new File(selectedPath));
 			}
 		}
-		
-		
-		
 
 		super.okPressed();
 	}
