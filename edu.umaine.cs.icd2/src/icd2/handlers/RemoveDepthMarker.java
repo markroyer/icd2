@@ -26,6 +26,7 @@ public class RemoveDepthMarker {
 
 			logger.debug("Removed the depth {}.", marker.getName());
 		
+			// TODO finish
 	}
 	
 }

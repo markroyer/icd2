@@ -41,6 +41,11 @@
             	<instanceof value="icd2.model.DepthYear"></instanceof>
          	</with>
         </definition>
+        <definition id="edu.umaine.cs.icd2.DateSession.selectionSet">
+        	<with variable="itemAtMouseClick">
+            	<instanceof value="icd2.model.DateSession"></instanceof>
+         	</with>
+        </definition>
    </extension>
 
 </plugin>
