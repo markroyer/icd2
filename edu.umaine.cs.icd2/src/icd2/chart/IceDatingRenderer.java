@@ -4,8 +4,6 @@
 package icd2.chart;
 
 import java.awt.AlphaComposite;
-import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Font;
 import java.awt.GradientPaint;
@@ -68,7 +66,9 @@ public class IceDatingRenderer extends XYLineAndShapeRenderer {
 			YearMarker im = (YearMarker) marker;
 			double start = im.getStartValue();
 			double end = im.getEndValue();
-			Range range = domainAxis.getRange();
+			Range origDomainRange = domainAxis.getRange();
+			// This is a stupid hack so that the range will draw 0 depth
+			Range range = Range.expandToInclude(origDomainRange, origDomainRange.getLowerBound() - 0.001);
 			if (!(range.intersects(start, end))) {
 				return;
 			}
@@ -149,6 +149,7 @@ public class IceDatingRenderer extends XYLineAndShapeRenderer {
 					if (range.contains(start)) {
 						line.setLine(x0, start2d, x1, start2d);
 						g2.draw(line);
+						System.err.println(line.getX1());
 					}
 					if (range.contains(end)) {
 						line.setLine(x0, end2d, x1, end2d);
