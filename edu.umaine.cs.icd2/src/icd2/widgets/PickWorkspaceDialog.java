@@ -56,8 +56,8 @@ public class PickWorkspaceDialog extends TitleAreaDialog {
 	@Override
 	protected Control createDialogArea(Composite parent) {
 		setTitle("Select a workspace");
-		setMessage(
-				"Select a workspace to store related dating files.\nThis is simply a folder that will contain projects and core data.");
+		setMessage("Select a workspace to store related dating files.\n"
+				+ "This is simply a folder that will contain projects and core data.");
 
 		try {
 			Composite inner = new Composite(parent, SWT.NONE);
@@ -129,14 +129,15 @@ public class PickWorkspaceDialog extends TitleAreaDialog {
 					}
 				}
 			});
-			
+
 			// For now we'll just ignore this option
 			// Button rememberWorkspaceButton = new Button(inner, SWT.CHECK);
 			// rememberWorkspaceButton.setLayoutData(
 			// new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
 			// rememberWorkspaceButton.setText("Remember workspace");
 			// rememberWorkspaceButton.setToolTipText(
-			// "Selecting this option will make it so that you are not prompted for the workspace location again");
+			// "Selecting this option will make it so that you are not prompted
+			// for the workspace location again");
 
 			inner.pack();
 
