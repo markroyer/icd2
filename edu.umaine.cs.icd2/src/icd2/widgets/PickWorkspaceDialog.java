@@ -102,6 +102,7 @@ public class PickWorkspaceDialog extends TitleAreaDialog {
 			browse.setSize(81, 28);
 			browse.setText("Browse...");
 
+			// Insert new selection into the combo
 			browse.addListener(SWT.Selection, new Listener() {
 
 				@Override
@@ -129,12 +130,13 @@ public class PickWorkspaceDialog extends TitleAreaDialog {
 				}
 			});
 			
-			Button rememberWorkspaceButton = new Button(inner, SWT.CHECK);
-			rememberWorkspaceButton.setLayoutData(
-					new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-			rememberWorkspaceButton.setText("Remember workspace");
-			rememberWorkspaceButton.setToolTipText(
-					"Selecting this option will make it so that you are not prompted for the workspace location again");
+			// For now we'll just ignore this option
+			// Button rememberWorkspaceButton = new Button(inner, SWT.CHECK);
+			// rememberWorkspaceButton.setLayoutData(
+			// new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
+			// rememberWorkspaceButton.setText("Remember workspace");
+			// rememberWorkspaceButton.setToolTipText(
+			// "Selecting this option will make it so that you are not prompted for the workspace location again");
 
 			inner.pack();
 
