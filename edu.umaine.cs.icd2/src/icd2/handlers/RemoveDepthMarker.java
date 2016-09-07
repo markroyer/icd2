@@ -22,11 +22,12 @@ public class RemoveDepthMarker {
 	public void execute(Shell shell, IEventBroker eventBroker, Workspace workspace,
 			@Named(CoreModelConstants.TREE_ITEM_SELECTION) @Optional DepthYear marker) {
 	
+			marker.getParent().removeYearDepth(marker.getYear());
+		
 			eventBroker.post(CoreModelConstants.ICD2_MODEL_DATESESSION_DEPTH_REMOVE, marker);
 
 			logger.debug("Removed the depth {}.", marker.getName());
 		
-			// TODO finish
 	}
 	
 }
