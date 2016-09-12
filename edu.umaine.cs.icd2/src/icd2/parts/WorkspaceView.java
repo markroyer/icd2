@@ -41,6 +41,7 @@ import org.slf4j.LoggerFactory;
 import icd2.model.Core;
 import icd2.model.CoreModelConstants;
 import icd2.model.DatingProject;
+import icd2.model.DepthYear;
 import icd2.model.ModelObject;
 import icd2.model.Workspace;
 import icd2.util.HDF5Util;
@@ -234,6 +235,20 @@ public class WorkspaceView {
 
 	@Inject
 	@Optional
+	public void onRemovedCore(@UIEventTopic(CoreModelConstants.REMOVED_CORE) Core core, Workspace workspace) {
+		viewer.refresh(workspace.getCoreData());
+		logger.debug("Refreshed workspace viewer after core '{}' removed.", core.getName());
+	}
+
+	@Inject
+	@Optional
+	public void onRemoveDepthMarker(@UIEventTopic(CoreModelConstants.ICD2_MODEL_DATESESSION_DEPTH_REMOVE) DepthYear marker) {
+		viewer.refresh(marker.getParent());
+		logger.debug("Refreshed date session after depth marker '{}' removed.", marker.getName());
+	}
+	
+	@Inject
+	@Optional
 	public void onDatingProjectNameChange(Shell shell,
 			@UIEventTopic(CoreModelConstants.ICD2_MODEL_MODELOBJECT_NAME_CHANGE) ModelObject<?, ?> mo) {
 
@@ -281,12 +296,6 @@ public class WorkspaceView {
 		logger.debug("Refreshed workspace viewer after dating project '{}' removed.", project.getName());
 	}
 
-	@Inject
-	@Optional
-	public void onRemovedCore(@UIEventTopic(CoreModelConstants.REMOVED_CORE) Core core, Workspace workspace) {
-		viewer.refresh(workspace.getCoreData());
-		logger.debug("Refreshed workspace viewer after core '{}' removed.", core.getName());
-	}
 
 	@Inject
 	@Optional

@@ -591,6 +591,8 @@ public class DatingProjectView implements ChartMouseListener {
 	public void onDepthMarkerRemove(MApplication application, EModelService modelService,
 			@UIEventTopic(CoreModelConstants.ICD2_MODEL_DATESESSION_DEPTH_REMOVE) DepthYear marker) {
 		
+		topCp.getChart().fireChartChanged();
+		
 		logger.debug("Remove marker {}", marker);
 		dirty.setDirty(true);
 	}
