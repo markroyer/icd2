@@ -102,6 +102,8 @@ public class IceCombinedDomainXYPlot extends CombinedDomainXYPlot
 			super.draw(g2, area, anchor, parentState, info);
 		} catch (Exception e) {
 			logger.error("Unable to draw with current axis. Resetting axis.");
+			this.getDomainAxis().setAutoRange(true);
+			return;
 		}
 		AxisSpace space = calculateAxisSpace(g2, area);
 		dataArea = space.shrink(area, null);

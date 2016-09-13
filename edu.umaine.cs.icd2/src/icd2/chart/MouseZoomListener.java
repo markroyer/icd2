@@ -57,9 +57,14 @@ public class MouseZoomListener implements MouseWheelListener {
 			double x3 = (xp + x1) / 2.;
 			double x4 = (xp + x2) / 2.;
 
-			dAxis.setRange(x3, x4);
+			if (x4 - x3 > 0) {
+				logger.debug("Attempting to zoom in. x1={}, x2={}, xp={}, x3={}, x4={}", x1, x2, xp, x3, x4);
+				dAxis.setRange(x3, x4);
+			} else {
+				logger.debug("Requested zoom range is not positive {}.  Ignoring range update request.", x4 - x3);
+			}
 
-			logger.debug("Attempting to zoom in. x1={}, x2={}, xp={}, x3={}, x4={}", x1, x2, xp, x3, x4);
+			
 		}
 		
 	}
