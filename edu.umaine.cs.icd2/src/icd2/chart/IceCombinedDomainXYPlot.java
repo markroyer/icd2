@@ -58,6 +58,8 @@ import org.jfree.chart.plot.PlotRenderingInfo;
 import org.jfree.chart.plot.PlotState;
 import org.jfree.ui.Layer;
 import org.jfree.util.PublicCloneable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import icd2.model.DateSession;
 
@@ -66,8 +68,10 @@ import icd2.model.DateSession;
  * @author Mark Royer
  * 
  */
-public class IceCombinedDomainXYPlot extends CombinedDomainXYPlot implements
-		Cloneable, PublicCloneable, Serializable, PlotChangeListener {
+public class IceCombinedDomainXYPlot extends CombinedDomainXYPlot
+		implements Cloneable, PublicCloneable, Serializable, PlotChangeListener {
+
+	private static final Logger logger = LoggerFactory.getLogger(IceCombinedDomainXYPlot.class);
 
 	/**
 	 * 
@@ -75,9 +79,9 @@ public class IceCombinedDomainXYPlot extends CombinedDomainXYPlot implements
 	private static final long serialVersionUID = 1L;
 
 	protected List<YearMarker> yearMarkers;
-	
+
 	protected Rectangle2D dataArea;
-	
+
 	/**
 	 * Default constructor.
 	 */
@@ -93,14 +97,17 @@ public class IceCombinedDomainXYPlot extends CombinedDomainXYPlot implements
 	}
 
 	@Override
-	public void draw(Graphics2D g2, Rectangle2D area, Point2D anchor,
-			PlotState parentState, PlotRenderingInfo info) {
-		super.draw(g2, area, anchor, parentState, info);
+	public void draw(Graphics2D g2, Rectangle2D area, Point2D anchor, PlotState parentState, PlotRenderingInfo info) {
+		try {
+			super.draw(g2, area, anchor, parentState, info);
+		} catch (Exception e) {
+			logger.error("Unable to draw with current axis. Resetting axis.");
+		}
 		AxisSpace space = calculateAxisSpace(g2, area);
-        dataArea = space.shrink(area, null);
+		dataArea = space.shrink(area, null);
 
 		drawDomainMarkers(g2, dataArea, 0, Layer.BACKGROUND);
-		
+
 	}
 
 	public void insertYearMarker(int index, Marker marker, boolean notify) {
@@ -113,16 +120,14 @@ public class IceCombinedDomainXYPlot extends CombinedDomainXYPlot implements
 			for (int i = index + 1; i < ds.getSize() && i < yearMarkers.size(); i++)
 				yearMarkers.get(i).setLabel(String.valueOf(ds.getYear(i)), false);
 		}
-		
+
 		if (notify) {
-            fireChangeEvent();
-        }
+			fireChangeEvent();
+		}
 	}
 
 	public Rectangle2D getDataArea() {
 		return dataArea;
 	}
-	
-	
-	
+
 }
