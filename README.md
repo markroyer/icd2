@@ -2,6 +2,14 @@
 
 ICD2 is a Java-based tool for dating ice cores.
 
+## Releases
+
+This section will hold release information.
+
+## Implementation Details
+
+This project is based on the OSGI (Eclipse RCP) framework.
+
 ## Building
 
 The project can be built most using maven from the
