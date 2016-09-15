@@ -1,0 +1,10 @@
+# Java source code folders
+edu.umaine.cs.icd2/src/* linguist-vendored=false
+edu.umaine.cs.icd2.tests/src/* linguist-vendored=false
+
+# The following folders are for building the project,
+# so they should be ignored by language statistics
+edu.umaine.cs.icd2.parent/* linguist-vendored
+edu.umaine.cs.icd2.feature/* linguist-vendored
+edu.umaine.cs.icd2.repository/* linguist-vendored
+edu.umaine.cs.icd2.jre.feature/* linguist-vendored
