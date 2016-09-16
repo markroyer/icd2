@@ -6,6 +6,14 @@ ICD2 is a Java-based tool for dating ice cores.
 
 This section will hold release information.
 
+## Examples
+
+The program loads CSV files that contain depth information.  The first
+row of the CSV file must be a list of headers.  The rest of the file
+should contain the data.  An example file can be found
+[here](https://raw.githubusercontent.com/wiki/markroyer/icd2/991test1.csv).
+
+
 ## Implementation Details
 
 This project is based on the OSGI (Eclipse RCP) framework.
