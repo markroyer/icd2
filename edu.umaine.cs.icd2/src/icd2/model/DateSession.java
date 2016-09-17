@@ -80,8 +80,15 @@ public class DateSession implements ModelObject<DateSession, DatingProject> {
 		this.name = name;
 	}
 
-	public void addYearDepth(int year, double depth) {
-		datedDepths.add(new DepthYear(this, depth, year));
+	/**
+	 * 
+	 * @param year
+	 * @param depth
+	 * @return The added depth year object or null if not added
+	 */
+	public DepthYear addYearDepth(int year, double depth) {
+		DepthYear dy = new DepthYear(this, depth, year);
+		return datedDepths.add(dy) ? dy : null;
 	}
 
 	public void removeYearDepth(int year) {
