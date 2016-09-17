@@ -133,7 +133,7 @@ public class AddDepthMarker {
 		try {
 			operationHistory.execute(ao, null, null);
 		} catch (ExecutionException e) {
-			logger.error("Failed to execute cropp plot.", e);
+			logger.error("Failed to execute add depth marker.", e);
 		}
 	}
 }

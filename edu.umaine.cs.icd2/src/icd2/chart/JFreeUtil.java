@@ -16,6 +16,7 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+import org.jfree.ui.Layer;
 import org.jfree.ui.RectangleInsets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,21 +37,26 @@ import icd2.util.DataFileException;
  */
 public class JFreeUtil {
 
-	private static final Logger logger = LoggerFactory.getLogger(JFreeUtil.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(JFreeUtil.class);
 
-	public static JFreeChart createJFreeChart(Chart chartModel) throws ObjectNotFound {
+	public static JFreeChart createJFreeChart(Chart chartModel)
+			throws ObjectNotFound {
 
 		Plot combinedPlotModel = chartModel.getPlots()[0][0];
 
 		XYSeriesCollection dataset = new XYSeriesCollection();
 		// Create the X Axis and customize it
-		NumberAxis domainAxis = new NumberAxis(combinedPlotModel.getPlotMethod().toString());
+		NumberAxis domainAxis = new NumberAxis(
+				combinedPlotModel.getPlotMethod().toString());
 
 		/*
-		 * Our chart is an instance of CombinedDomainXYPlot, because it contains more than one chart (subplots) that
-		 * share the same X axis but each has it's own Y axis
+		 * Our chart is an instance of CombinedDomainXYPlot, because it contains
+		 * more than one chart (subplots) that share the same X axis but each
+		 * has it's own Y axis
 		 */
-		IceCombinedDomainXYPlot combinedPlot = new IceCombinedDomainXYPlot(domainAxis);
+		IceCombinedDomainXYPlot combinedPlot = new IceCombinedDomainXYPlot(
+				domainAxis);
 
 		List<Double> xData = combinedPlotModel.getXData();
 
@@ -87,9 +93,10 @@ public class JFreeUtil {
 			idr.setClipTop(pv.isCropValues());
 			idr.setClipBottom(pv.isCropValues());
 
-			XYClippablePlot subplot = new XYClippablePlot(dataset, combinedPlot.getDomainAxis(), rangeAxis, idr);// new
-																													// XYLineAndShapeRenderer(true,
-																													// false));
+			XYClippablePlot subplot = new XYClippablePlot(dataset,
+					combinedPlot.getDomainAxis(), rangeAxis, idr);// new
+																	// XYLineAndShapeRenderer(true,
+																	// false));
 
 			// idr.setSeriesShape(0,ShapeUtilities.createDiamond(3f));
 			// idr.setSeriesShapesVisible(0, true);
@@ -129,8 +136,8 @@ public class JFreeUtil {
 		combinedPlot.setOrientation(PlotOrientation.VERTICAL);
 
 		// create your chart from the one big combined plot
-		final JFreeChart chart = new JFreeChart(chartModel.getTitle(), JFreeChart.DEFAULT_TITLE_FONT, combinedPlot,
-				true);
+		final JFreeChart chart = new JFreeChart(chartModel.getTitle(),
+				JFreeChart.DEFAULT_TITLE_FONT, combinedPlot, true);
 
 		// customize your chart
 		chart.setBackgroundPaint(java.awt.Color.white);
@@ -142,42 +149,54 @@ public class JFreeUtil {
 		plot.setAxisOffset(new RectangleInsets(5.0, 5.0, 5.0, 5.0));
 
 		RectangleInsets m = chart.getTitle().getMargin();
-		chart.getTitle().setMargin(m.getTop(), m.getLeft(), m.getBottom() + 20, m.getRight());
+		chart.getTitle().setMargin(m.getTop(), m.getLeft(), m.getBottom() + 20,
+				m.getRight());
 
 		// Add the markers
 
 		DateSession ds = chartModel.getActiveDateSession();
 
 		for (int i = 0; i < ds.getSize(); i++) {
-			addYearMarker(chartModel, chart, ds.getDepth(i), i, i == ds.getSize() -1);
+			addYearMarker(chartModel, chart, ds.getDepth(i), i,
+					i == ds.getSize() - 1);
 		}
+		logger.debug("Markers are {}", plot.getDomainMarkers(Layer.BACKGROUND));
 
 		return chart;
 	}
 
-	public static Point2D getCoordinate(ChartPanel cp, CombinedDomainXYPlot cdp, XYPlot sp, Point point) {
-		final Point2D p = cp.translateScreenToJava2D(new Point(point.x, point.y));
-		final Rectangle2D dataArea = cp.getChartRenderingInfo().getPlotInfo().getSubplotInfo(0).getDataArea();
+	public static Point2D getCoordinate(ChartPanel cp, CombinedDomainXYPlot cdp,
+			XYPlot sp, Point point) {
+		final Point2D p = cp
+				.translateScreenToJava2D(new Point(point.x, point.y));
+		final Rectangle2D dataArea = cp.getChartRenderingInfo().getPlotInfo()
+				.getSubplotInfo(0).getDataArea();
 
-		double xx = cdp.getDomainAxis().java2DToValue(p.getX(), dataArea, cdp.getDomainAxisEdge());
-		double yy = sp.getRangeAxis().java2DToValue(p.getY(), dataArea, sp.getRangeAxisEdge());
+		double xx = cdp.getDomainAxis().java2DToValue(p.getX(), dataArea,
+				cdp.getDomainAxisEdge());
+		double yy = sp.getRangeAxis().java2DToValue(p.getY(), dataArea,
+				sp.getRangeAxisEdge());
 		return new Point2D.Double(xx, yy);
 	}
 
-	public static void addYearMarker(Chart chartModel, double xx, int index, boolean notify) {
+	public static void addYearMarker(Chart chartModel, JFreeChart chart,
+			double xx, int index, boolean notify) {
 
-		IceCombinedDomainXYPlot plot = ((IceCombinedDomainXYPlot) chart.getPlot());
+		IceCombinedDomainXYPlot plot = ((IceCombinedDomainXYPlot) chart
+				.getPlot());
 
 		DateSession ds = chartModel.getActiveDateSession();
-		
+
 		YearMarker newMarker = new YearMarker(xx, index, ds);
 
 		plot.insertYearMarker(index, newMarker, notify);
-//		yearMarkers.add(index, newMarker);
+		// plot.insertYearMarker(index, newMarker, notify);
+		// yearMarkers.add(index, newMarker);
 
-//		for (int i = index + 1; i < ds.getSize() && i < yearMarkers.size(); i++)
-//			yearMarkers.get(i).setLabel(String.valueOf(ds.getYear(i)), false);
+		// for (int i = index + 1; i < ds.getSize() && i < yearMarkers.size();
+		// i++)
+		// yearMarkers.get(i).setLabel(String.valueOf(ds.getYear(i)), false);
 
 	}
-	
+
 }

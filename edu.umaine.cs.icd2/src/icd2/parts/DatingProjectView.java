@@ -60,6 +60,7 @@ import icd2.chart.JFreeUtil;
 import icd2.chart.MouseZoomListener;
 import icd2.chart.PanningMouseListener;
 import icd2.chart.YearMarker;
+import icd2.handlers.AddDepthMarker;
 import icd2.model.Chart;
 import icd2.model.CoreData;
 import icd2.model.CoreModelConstants;
@@ -77,7 +78,8 @@ import icd2.util.WorkspaceUtil;
 
 public class DatingProjectView implements ChartMouseListener {
 
-	private static final Logger logger = LoggerFactory.getLogger(DatingProjectView.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(DatingProjectView.class);
 
 	private Composite chartComposite;
 
@@ -102,26 +104,31 @@ public class DatingProjectView implements ChartMouseListener {
 	}
 
 	@PostConstruct
-	public void postConstruct(Composite parent, final IEclipseContext ctx, @Optional DatingProject project, MPart mpart,
-			Workspace workspace, EMenuService menuService, EModelService modelService, MApplication application,
-			IEventBroker eventBroker, IUndoContext undoContext) throws ObjectNotFound {
+	public void postConstruct(Composite parent, final IEclipseContext ctx,
+			@Optional DatingProject incomingProject, MPart mpart,
+			Workspace workspace, EMenuService menuService,
+			EModelService modelService, MApplication application,
+			IEventBroker eventBroker, IUndoContext undoContext)
+			throws ObjectNotFound {
 
-		if (project == null) {
-			project = WorkspaceUtil.getProject(workspace, mpart.getLabel());
+		if (incomingProject == null) {
+			incomingProject = WorkspaceUtil.getProject(workspace,
+					mpart.getLabel());
 		}
 
 		parent.setLayout(new GridLayout(1, false));
 
-		this.project = project;
+		this.project = incomingProject;
 
-		ctx.set(DatingProject.class, project);
+		ctx.set(DatingProject.class, incomingProject);
 		ctx.getParent().remove(DatingProject.class);
 
-		final Chart chartModel = project.getChart();
+		final Chart chartModel = incomingProject.getChart();
 
 		JFreeChart topJFreeChart = JFreeUtil.createJFreeChart(chartModel);
 
-		chartComposite = new Composite(parent, SWT.EMBEDDED | SWT.BORDER | SWT.NO_BACKGROUND);
+		chartComposite = new Composite(parent,
+				SWT.EMBEDDED | SWT.BORDER | SWT.NO_BACKGROUND);
 		chartComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		// menuService.registerContextMenu(chartComposite,
@@ -152,7 +159,8 @@ public class DatingProjectView implements ChartMouseListener {
 			@Override
 			public void mouseExited(MouseEvent e) {
 
-				CombinedDomainXYPlot cdPlot = (CombinedDomainXYPlot) DatingProjectView.this.topCp.getChart().getPlot();
+				CombinedDomainXYPlot cdPlot = (CombinedDomainXYPlot) DatingProjectView.this.topCp
+						.getChart().getPlot();
 
 				@SuppressWarnings("unchecked")
 				List<XYPlot> subplotsList = cdPlot.getSubplots();
@@ -200,10 +208,14 @@ public class DatingProjectView implements ChartMouseListener {
 
 						XYItemEntity entity = (XYItemEntity) ent;
 
-						logger.info("XYItemEntity selected. Entity Item: {}, SeriesIndex: {}, Dataset: {}",
-								entity.getItem(), entity.getSeriesIndex(), entity.getDataset());
+						logger.info(
+								"XYItemEntity selected. Entity Item: {}, SeriesIndex: {}, Dataset: {}",
+								entity.getItem(), entity.getSeriesIndex(),
+								entity.getDataset());
 					} else {
-						logger.info("Chart clicked.  Selected item is of type {}", ent.getClass());
+						logger.info(
+								"Chart clicked.  Selected item is of type {}",
+								ent.getClass());
 					}
 				} else {
 					logger.info("Chart clicked, but no entity selected.");
@@ -224,39 +236,46 @@ public class DatingProjectView implements ChartMouseListener {
 					if (combinedPlotModel.getRangeValues().size() < 1)
 						return; // Nothing to do
 
-					CombinedDomainXYPlot cdp = (CombinedDomainXYPlot) topCp.getChart().getPlot();
+					CombinedDomainXYPlot cdp = (CombinedDomainXYPlot) topCp
+							.getChart().getPlot();
 
-					double xx = JFreeUtil
-							.getCoordinate(topCp, cdp, (XYPlot) cdp.getSubplots().get(0), event.getTrigger().getPoint())
-							.getX();
+					double xx = JFreeUtil.getCoordinate(topCp, cdp,
+							(XYPlot) cdp.getSubplots().get(0),
+							event.getTrigger().getPoint()).getX();
 					// year and depth should always have top year already in
 					// them
 					DateSession ds = chartModel.getActiveDateSession();
 
-					try {
+					// try {
+					new AddDepthMarker().addDepthMarker(project.getChart(), xx,
+							ds.getYear(ds.getDepthIndex(xx)), true);
 
-						int insertionSpot = ds.insertDepth(xx);
+					// int insertionSpot = ds.insertDepth(xx);
+					//
+					// if (insertionSpot >= 0)
+					// JFreeUtil.addYearMarker(DatingProjectView.this.project.getChart(),
+					// xx, insertionSpot,
+					// true);
 
-						if (insertionSpot >= 0)
-							JFreeUtil.addYearMarker(DatingProjectView.this.project.getChart(), xx, insertionSpot,
-									true);
+					dirty.setDirty(true);
 
-						dirty.setDirty(true);
-
-					} catch (IllegalAccessException e) {
-						logger.error(e.getMessage(), e);
-					}
+					// } catch (IllegalAccessException e) {
+					// logger.error(e.getMessage(), e);
+					// }
 
 					updateLines();
 
-				} else if (MouseEvent.BUTTON3 == event.getTrigger().getButton()) { // Right
-																					// click
+				} else if (MouseEvent.BUTTON3 == event.getTrigger()
+						.getButton()) { // Right
+										// click
 					logger.debug("Right clicked");
 
-					List<MPart> projectPartsList = modelService.findElements(application, "icd2.partdescriptor.project",
+					List<MPart> projectPartsList = modelService.findElements(
+							application, "icd2.partdescriptor.project",
 							MPart.class, null);
 
-					PopupUtil.showMenu(projectPartsList.get(0), "edu.umaine.cs.icd2.popupmenu.chart", chartModel,
+					PopupUtil.showMenu(projectPartsList.get(0),
+							"edu.umaine.cs.icd2.popupmenu.chart", chartModel,
 							eventBroker, undoContext);
 
 				}
@@ -287,7 +306,8 @@ public class DatingProjectView implements ChartMouseListener {
 
 		frame.add(topCp);
 
-		bottomChartComposite = new Composite(parent, SWT.EMBEDDED | SWT.BORDER | SWT.NO_BACKGROUND);
+		bottomChartComposite = new Composite(parent,
+				SWT.EMBEDDED | SWT.BORDER | SWT.NO_BACKGROUND);
 		bottomChartComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		bottomChart = createBottomChart(chartModel);
@@ -310,7 +330,8 @@ public class DatingProjectView implements ChartMouseListener {
 
 		bottomFrame.add(bottomCp);
 
-		CombinedDomainXYPlot tp = (CombinedDomainXYPlot) topJFreeChart.getPlot();
+		CombinedDomainXYPlot tp = (CombinedDomainXYPlot) topJFreeChart
+				.getPlot();
 		tp.setDomainPannable(true);
 
 		updateLines();
@@ -323,7 +344,8 @@ public class DatingProjectView implements ChartMouseListener {
 		Point mousePoint = new Point(mouseX, mouseY);
 
 		// convert the Java2D coordinate to axis coordinates...
-		CombinedDomainXYPlot cdPlot = (CombinedDomainXYPlot) this.topCp.getChart().getPlot();
+		CombinedDomainXYPlot cdPlot = (CombinedDomainXYPlot) this.topCp
+				.getChart().getPlot();
 		ChartRenderingInfo chartInfo = this.topCp.getChartRenderingInfo();
 		Point2D java2DPoint = this.topCp.translateScreenToJava2D(mousePoint);
 		PlotRenderingInfo plotInfo = chartInfo.getPlotInfo();
@@ -340,9 +362,11 @@ public class DatingProjectView implements ChartMouseListener {
 			// all subplots have the domain crosshair
 			// the x coordinate is the same for all subplots
 			Rectangle2D dataArea = plotInfo.getDataArea();
-			double xx = cdPlot.getDomainAxis().java2DToValue(java2DPoint.getX(), dataArea, cdPlot.getDomainAxisEdge());
+			double xx = cdPlot.getDomainAxis().java2DToValue(java2DPoint.getX(),
+					dataArea, cdPlot.getDomainAxisEdge());
 
-			Rectangle2D panelArea = this.topCp.getScreenDataArea(mouseX, mouseY);
+			Rectangle2D panelArea = this.topCp.getScreenDataArea(mouseX,
+					mouseY);
 
 			for (int i = 0; i < subplotsList.size(); i++) {
 				XYPlot subplot = subplotsList.get(i);
@@ -354,7 +378,8 @@ public class DatingProjectView implements ChartMouseListener {
 				if (subplotIndex == i) {
 					// this subplot has the range crosshair
 					// get the y axis positon
-					double yy = subplot.getRangeAxis().java2DToValue(mousePoint.getY(), panelArea,
+					double yy = subplot.getRangeAxis().java2DToValue(
+							mousePoint.getY(), panelArea,
 							subplot.getRangeAxisEdge());
 					// make sure the range crosshair is on
 					subplot.setRangeCrosshairVisible(true);
@@ -375,7 +400,8 @@ public class DatingProjectView implements ChartMouseListener {
 		}
 	}
 
-	private JFreeChart createBottomChart(Chart chartModel) throws ObjectNotFound {
+	private JFreeChart createBottomChart(Chart chartModel)
+			throws ObjectNotFound {
 
 		XYSeriesCollection dataset = new org.jfree.data.xy.XYSeriesCollection();
 		// Create the X Axis and customize it
@@ -389,7 +415,8 @@ public class DatingProjectView implements ChartMouseListener {
 		 * more than one chart (subplots) that share the same X axis but each
 		 * has it's own Y axis
 		 */
-		IceCombinedDomainXYPlot combinedPlot = new IceCombinedDomainXYPlot(numberAxis);
+		IceCombinedDomainXYPlot combinedPlot = new IceCombinedDomainXYPlot(
+				numberAxis);
 
 		Plot combinedPlotModel = chartModel.getPlots()[0][0];
 
@@ -422,8 +449,8 @@ public class DatingProjectView implements ChartMouseListener {
 			// });
 			// }
 
-			XYPlot subplot = new XYPlot(dataset, combinedPlot.getDomainAxis(), rangeAxis,
-					new XYLineAndShapeRenderer(true, false));
+			XYPlot subplot = new XYPlot(dataset, combinedPlot.getDomainAxis(),
+					rangeAxis, new XYLineAndShapeRenderer(true, false));
 			subplot.setBackgroundPaint(null);
 
 			// customization
@@ -447,7 +474,8 @@ public class DatingProjectView implements ChartMouseListener {
 		combinedPlot.setOrientation(PlotOrientation.VERTICAL);
 
 		// create your chart from the one big combined plot
-		final JFreeChart chart = new JFreeChart(chartModel.getTitle() + " Dated", JFreeChart.DEFAULT_TITLE_FONT,
+		final JFreeChart chart = new JFreeChart(
+				chartModel.getTitle() + " Dated", JFreeChart.DEFAULT_TITLE_FONT,
 				combinedPlot, true);
 
 		// customize your chart
@@ -471,7 +499,8 @@ public class DatingProjectView implements ChartMouseListener {
 			@Override
 			public void run() {
 
-				final CombinedDomainXYPlot plot = ((CombinedDomainXYPlot) topCp.getChart().getPlot());
+				final CombinedDomainXYPlot plot = ((CombinedDomainXYPlot) topCp
+						.getChart().getPlot());
 
 				@SuppressWarnings("unchecked")
 				List<XYPlot> subPlots = plot.getSubplots();
@@ -481,14 +510,17 @@ public class DatingProjectView implements ChartMouseListener {
 				DateSession ds = project.getChart().getActiveDateSession();
 
 				@SuppressWarnings("unchecked")
-				List<XYPlot> bSubPlots = ((IceCombinedDomainXYPlot) bottomChart.getXYPlot()).getSubplots();
+				List<XYPlot> bSubPlots = ((IceCombinedDomainXYPlot) bottomChart
+						.getXYPlot()).getSubplots();
 				for (int i = 0; i < subPlots.size(); i++) {
 
 					XYPlot sp = subPlots.get(i);
 					XYPlot bsp = bSubPlots.get(i);
 
-					XYSeries s = (XYSeries) ((XYSeriesCollection) sp.getDataset()).getSeries().get(0);
-					XYSeries bs = (XYSeries) ((XYSeriesCollection) bsp.getDataset()).getSeries().get(0);
+					XYSeries s = (XYSeries) ((XYSeriesCollection) sp
+							.getDataset()).getSeries().get(0);
+					XYSeries bs = (XYSeries) ((XYSeriesCollection) bsp
+							.getDataset()).getSeries().get(0);
 
 					bs.clear();
 
@@ -500,14 +532,17 @@ public class DatingProjectView implements ChartMouseListener {
 						SplineInterpolator si = new SplineInterpolator();
 						PolynomialSplineFunction spf = si.interpolate(dr, yr);
 
-						for (int j = 0; j < s.getItemCount() && spf.isValidPoint(s.getX(j).doubleValue()); j++) {
-							bs.add(spf.value(s.getX(j).doubleValue()), s.getY(j), false);
+						for (int j = 0; j < s.getItemCount() && spf
+								.isValidPoint(s.getX(j).doubleValue()); j++) {
+							bs.add(spf.value(s.getX(j).doubleValue()),
+									s.getY(j), false);
 						}
 					}
 					bs.fireSeriesChanged();
 				}
 
-				CombinedDomainXYPlot bp = ((CombinedDomainXYPlot) bottomChart.getPlot());
+				CombinedDomainXYPlot bp = ((CombinedDomainXYPlot) bottomChart
+						.getPlot());
 
 				@SuppressWarnings("unchecked")
 				List<XYPlot> subplots = bp.getSubplots();
@@ -546,10 +581,12 @@ public class DatingProjectView implements ChartMouseListener {
 	 */
 	@Inject
 	@Optional
-	public void onChartTitleChange(MApplication application, EModelService modelService,
+	public void onChartTitleChange(MApplication application,
+			EModelService modelService,
 			@UIEventTopic(CoreModelConstants.ICD2_MODEL_CHART_TITLE_CHANGE) Chart chart) {
 		topCp.getChart().setTitle(this.project.getChart().getTitle());
-		bottomCp.getChart().setTitle(this.project.getChart().getTitle() + " Dated");
+		bottomCp.getChart()
+				.setTitle(this.project.getChart().getTitle() + " Dated");
 	}
 
 	@Inject
@@ -562,7 +599,8 @@ public class DatingProjectView implements ChartMouseListener {
 
 	@Inject
 	@Optional
-	public void onModelObjectNameChange(MApplication application, EModelService modelService,
+	public void onModelObjectNameChange(MApplication application,
+			EModelService modelService,
 			@UIEventTopic(CoreModelConstants.ICD2_MODEL_MODELOBJECT_CHANGE) ModelObject<?, ?> mo) {
 
 		ModelObject<?, ?> cur = mo;
@@ -577,7 +615,8 @@ public class DatingProjectView implements ChartMouseListener {
 
 	@Inject
 	@Optional
-	public void onDatingProjectChange(MApplication application, EModelService modelService,
+	public void onDatingProjectChange(MApplication application,
+			EModelService modelService,
 			@UIEventTopic(CoreModelConstants.ICD2_MODEL_DATINGPROJECT_CHANGE) DatingProject project) {
 
 		if (this.project.equals(project))
@@ -586,33 +625,38 @@ public class DatingProjectView implements ChartMouseListener {
 
 	@Inject
 	@Optional
-	public void onDepthMarkerRemove(MApplication application, EModelService modelService,
+	public void onDepthMarkerRemove(MApplication application,
+			EModelService modelService,
 			@UIEventTopic(CoreModelConstants.ICD2_MODEL_DATESESSION_DEPTH_REMOVE) DepthYear marker) {
-		
+
 		topCp.getChart().fireChartChanged();
-		
+
 		logger.debug("Remove marker {}", marker);
 		dirty.setDirty(true);
 	}
-	
+
 	@Inject
 	@Optional
-	public void onDepthMarkerAdd(MApplication application, EModelService modelService,
+	public void onDepthMarkerAdd(MApplication application,
+			EModelService modelService,
 			@UIEventTopic(CoreModelConstants.ICD2_MODEL_DATESESSION_DEPTH_ADD) DepthYear marker) {
-		
+
 		topCp.getChart().fireChartChanged();
-		
+
 		logger.debug("Add marker {}", marker);
 		dirty.setDirty(true);
 	}
-	
+
 	@Inject
 	@Optional
-	public void onModelChartPlotCropChange(MApplication application, EModelService modelService,
+	public void onModelChartPlotCropChange(MApplication application,
+			EModelService modelService,
 			@UIEventTopic(CoreModelConstants.ICD2_MODEL_CHART_PLOT_CROPLINES_CHANGE) PlotValues pv) {
 
 		if (pv.getParent().getParent().getParent() instanceof Chart) {
-			if (this.project.equals(((Chart) pv.getParent().getParent().getParent()).getParent()))
+			if (this.project
+					.equals(((Chart) pv.getParent().getParent().getParent())
+							.getParent()))
 				dirty.setDirty(true);
 			else
 				return;
@@ -622,12 +666,14 @@ public class DatingProjectView implements ChartMouseListener {
 		Plot superPlot = (Plot) plot.getParent();
 
 		@SuppressWarnings("unchecked")
-		List<XYPlot> plots = (List<XYPlot>) ((CombinedDomainXYPlot) topCp.getChart().getPlot()).getSubplots();
+		List<XYPlot> plots = (List<XYPlot>) ((CombinedDomainXYPlot) topCp
+				.getChart().getPlot()).getSubplots();
 
 		int index = 0;
 		for (int i = 0; i < superPlot.getSubplots().length; i++) {
 			for (int j = 0; j < superPlot.getSubplots()[i].length; j++) {
-				for (PlotValues p : superPlot.getSubplots()[i][j].getRangeValues()) {
+				for (PlotValues p : superPlot.getSubplots()[i][j]
+						.getRangeValues()) {
 					if (p.equals(pv)) {
 						index = i * superPlot.getSubplots()[i].length + j;
 						break;

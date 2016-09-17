@@ -29,10 +29,11 @@ import icd2.model.DateSession;
  * @author Mark Royer
  * 
  */
-public class IceCombinedDomainXYPlot extends CombinedDomainXYPlot
-		implements Cloneable, PublicCloneable, Serializable, PlotChangeListener {
+public class IceCombinedDomainXYPlot extends CombinedDomainXYPlot implements
+		Cloneable, PublicCloneable, Serializable, PlotChangeListener {
 
-	private static final Logger logger = LoggerFactory.getLogger(IceCombinedDomainXYPlot.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(IceCombinedDomainXYPlot.class);
 
 	/**
 	 * 
@@ -58,7 +59,8 @@ public class IceCombinedDomainXYPlot extends CombinedDomainXYPlot
 	}
 
 	@Override
-	public void draw(Graphics2D g2, Rectangle2D area, Point2D anchor, PlotState parentState, PlotRenderingInfo info) {
+	public void draw(Graphics2D g2, Rectangle2D area, Point2D anchor,
+			PlotState parentState, PlotRenderingInfo info) {
 		try {
 			super.draw(g2, area, anchor, parentState, info);
 		} catch (Exception e) {
@@ -73,20 +75,16 @@ public class IceCombinedDomainXYPlot extends CombinedDomainXYPlot
 
 	}
 
-	@Override
-	public void addDomainMarker(int index, Marker marker, Layer layer,
+	public void insertYearMarker(int index, YearMarker yearMarker,
 			boolean notify) {
-		super.addDomainMarker(index, marker, layer, notify);
-		
-		if (marker instanceof YearMarker) {
-			YearMarker yearMarker = (YearMarker)marker;
-			DateSession ds = yearMarker.getDateSession();
-			
-			yearMarkers.add(index, yearMarker);
-			for (int i = index + 1; i < ds.getSize() && i < yearMarkers.size(); i++)
-				yearMarkers.get(i).setLabel(String.valueOf(ds.getYear(i)), false);			
-		}
-		
+		super.addDomainMarker(0, yearMarker, Layer.BACKGROUND, false);
+
+		DateSession ds = yearMarker.getDateSession();
+
+		yearMarkers.add(index, yearMarker);
+		for (int i = index + 1; i < ds.getSize() && i < yearMarkers.size(); i++)
+			yearMarkers.get(i).setLabel(String.valueOf(ds.getYear(i)), false);
+
 		if (notify) {
 			fireChangeEvent();
 		}
