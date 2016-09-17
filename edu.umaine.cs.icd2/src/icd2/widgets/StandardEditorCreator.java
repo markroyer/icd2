@@ -18,14 +18,11 @@ import org.eclipse.core.databinding.observable.map.IObservableMap;
 import org.eclipse.core.databinding.observable.map.WritableMap;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.validation.IValidator;
-import org.eclipse.core.internal.commands.operations.GlobalUndoContext;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
-import org.eclipse.e4.ui.internal.workbench.WorkbenchLogger;
 import org.eclipse.e4.ui.workbench.UIEvents;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
@@ -382,7 +379,7 @@ public class StandardEditorCreator {
 		Text text = new Text(container, SWT.SINGLE);
 		text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, true));
 
-		IObservableMap attributesMap = new WritableMap();
+		IObservableMap attributesMap = new WritableMap<>();
 		DataBindingContext dbc = new DataBindingContext();
 
 		IOperationHistory operationHistory = OperationHistoryFactory.getOperationHistory();
