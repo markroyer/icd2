@@ -73,17 +73,20 @@ public class IceCombinedDomainXYPlot extends CombinedDomainXYPlot
 
 	}
 
-	public void insertYearMarker(int index, Marker marker, boolean notify) {
-		super.addDomainMarker(0, marker, Layer.BACKGROUND, false);
-
+	@Override
+	public void addDomainMarker(int index, Marker marker, Layer layer,
+			boolean notify) {
+		super.addDomainMarker(index, marker, layer, notify);
+		
 		if (marker instanceof YearMarker) {
-			YearMarker year = (YearMarker) marker;
-			DateSession ds = year.getDateSession();
-			yearMarkers.add(index, year);
+			YearMarker yearMarker = (YearMarker)marker;
+			DateSession ds = yearMarker.getDateSession();
+			
+			yearMarkers.add(index, yearMarker);
 			for (int i = index + 1; i < ds.getSize() && i < yearMarkers.size(); i++)
-				yearMarkers.get(i).setLabel(String.valueOf(ds.getYear(i)), false);
+				yearMarkers.get(i).setLabel(String.valueOf(ds.getYear(i)), false);			
 		}
-
+		
 		if (notify) {
 			fireChangeEvent();
 		}

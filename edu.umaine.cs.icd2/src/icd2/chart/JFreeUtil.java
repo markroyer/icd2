@@ -164,7 +164,7 @@ public class JFreeUtil {
 		return new Point2D.Double(xx, yy);
 	}
 
-	public static void addYearMarker(Chart chartModel, JFreeChart chart, double xx, int index, boolean notify) {
+	public static void addYearMarker(Chart chartModel, double xx, int index, boolean notify) {
 
 		IceCombinedDomainXYPlot plot = ((IceCombinedDomainXYPlot) chart.getPlot());
 

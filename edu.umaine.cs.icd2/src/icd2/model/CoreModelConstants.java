@@ -38,5 +38,6 @@ public class CoreModelConstants {
 	public static final String ICD2_MODEL_CHART_PLOT_CROPLINES_CHANGE = "icd2/model/DatingProject/Chart/Plot/cropLines_change";
 	
 	public static final String ICD2_MODEL_DATESESSION_DEPTH_REMOVE = "icd2/model/DatingProject/DateSession/DepthYear_remove";
+	public static final String ICD2_MODEL_DATESESSION_DEPTH_ADD = "icd2/model/DatingProject/DateSession/DepthYear_add";
 	
 }

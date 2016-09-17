@@ -99,22 +99,9 @@ public class DateSession implements ModelObject<DateSession, DatingProject> {
 	public int insertDepth(double depth) throws IllegalAccessException {
 		int i = datedDepths.size();
 
-		if (depth <= datedDepths.get(i - 1).getDepth()) // Already has a top
-														// depth of 0
-			i = Collections.binarySearch(datedDepths,
-					new DepthYear(this, depth, 0), new Comparator<DepthYear>() {
-						@Override
-						public int compare(DepthYear o1, DepthYear o2) {
-							double d1 = o1.getDepth();
-							double d2 = o2.getDepth();
-							if (d1 < d2)
-								return -1;
-							else if (d1 > d2)
-								return 1;
-							else
-								return 0;
-						}
-					});
+		// All sessions start with a top depth of 0
+		if (depth <= datedDepths.get(i - 1).getDepth())
+			i = getDepthIndex(depth);
 
 		if (0 <= i && i < datedDepths.size()) {
 			logger.info("A depth at position {} has already been dated.",
@@ -143,8 +130,49 @@ public class DateSession implements ModelObject<DateSession, DatingProject> {
 		return i;
 	}
 
-	public int getYear(int i) {
-		return datedDepths.get(i).getYear();
+	/**
+	 * Returns the location of the given depth. If the given depth does not
+	 * exist in this date session, then (-(insertion point) - 1) is returned.
+	 * 
+	 * @param depth
+	 *            A non-negative distance
+	 * @return The index the depth occurs or (-(insertion point) - 1)
+	 */
+	public int getDepthIndex(double depth) {
+		return Collections.binarySearch(datedDepths,
+				new DepthYear(this, depth, 0), new Comparator<DepthYear>() {
+					@Override
+					public int compare(DepthYear o1, DepthYear o2) {
+						double d1 = o1.getDepth();
+						double d2 = o2.getDepth();
+						if (d1 < d2)
+							return -1;
+						else if (d1 > d2)
+							return 1;
+						else
+							return 0;
+					}
+				});
+	}
+
+	/**
+	 * @param index
+	 * @return The year at the given index or the year that would be at that
+	 *         index
+	 */
+	public int getYear(int index) {
+
+		if (0 <= index && index < datedDepths.size()) {
+			return datedDepths.get(index).getYear();
+		} else {
+			// Outside of the existing index return what would be the date
+			if (index >= datedDepths.size()) {
+				// Return last date -1
+				return datedDepths.get(datedDepths.size() - 1).getYear() - 1;
+			} else { // index < 0
+				return datedDepths.get((index * -1) + 1).getYear() - 1;
+			}
+		}
 	}
 
 	public double getDepth(int i) {

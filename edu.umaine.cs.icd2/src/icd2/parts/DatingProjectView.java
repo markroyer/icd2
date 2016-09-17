@@ -234,17 +234,15 @@ public class DatingProjectView implements ChartMouseListener {
 					DateSession ds = chartModel.getActiveDateSession();
 
 					try {
-						JFreeChart chart = topCp.getChart();
 
 						int insertionSpot = ds.insertDepth(xx);
 
 						if (insertionSpot >= 0)
-							JFreeUtil.addYearMarker(DatingProjectView.this.project.getChart(), chart, xx, insertionSpot,
+							JFreeUtil.addYearMarker(DatingProjectView.this.project.getChart(), xx, insertionSpot,
 									true);
 
 						dirty.setDirty(true);
 
-						chart.fireChartChanged();
 					} catch (IllegalAccessException e) {
 						logger.error(e.getMessage(), e);
 					}
@@ -594,6 +592,17 @@ public class DatingProjectView implements ChartMouseListener {
 		topCp.getChart().fireChartChanged();
 		
 		logger.debug("Remove marker {}", marker);
+		dirty.setDirty(true);
+	}
+	
+	@Inject
+	@Optional
+	public void onDepthMarkerAdd(MApplication application, EModelService modelService,
+			@UIEventTopic(CoreModelConstants.ICD2_MODEL_DATESESSION_DEPTH_ADD) DepthYear marker) {
+		
+		topCp.getChart().fireChartChanged();
+		
+		logger.debug("Add marker {}", marker);
 		dirty.setDirty(true);
 	}
 	
