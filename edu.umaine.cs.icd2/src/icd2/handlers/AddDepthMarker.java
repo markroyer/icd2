@@ -1,7 +1,6 @@
 
 package icd2.handlers;
 
-import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.eclipse.core.commands.ExecutionException;
@@ -18,13 +17,11 @@ import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Shell;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import icd2.chart.YearMarker;
 import icd2.model.Chart;
 import icd2.model.CoreModelConstants;
 import icd2.model.DateSession;
@@ -35,14 +32,8 @@ public class AddDepthMarker {
 	private static final Logger logger = LoggerFactory
 			.getLogger(AddDepthMarker.class);
 
-	@Inject
-	private IEventBroker eventBroker;
-
-	@Inject
-	private IUndoContext ctx;
-
 	@Execute
-	public void execute(Shell shell,
+	public void execute(Shell shell, IEventBroker eventBroker, IUndoContext ctx,
 			@Named(CoreModelConstants.TREE_ITEM_SELECTION) @Optional DateSession session) {
 		logger.info("Adding a depth marker to {}.", session.getName());
 
@@ -67,13 +58,14 @@ public class AddDepthMarker {
 
 			int year = session.getYear(session.getDepthIndex(depth));
 
-			addDepthMarker(chart, depth, year, true);
+			addDepthMarker(eventBroker, ctx, chart, depth, year, true);
 
 		}
 
 	}
 
-	public void addDepthMarker(Chart chartModel, double depth, int year,
+	public static void addDepthMarker(IEventBroker eventBroker,
+			IUndoContext ctx, Chart chartModel, double depth, int year,
 			boolean notify) {
 
 		DateSession ds = chartModel.getActiveDateSession();
@@ -104,14 +96,28 @@ public class AddDepthMarker {
 			public IStatus redo(IProgressMonitor monitor, IAdaptable info)
 					throws ExecutionException {
 
-				dy = ds.addYearDepth(year, depth);
+				int index = -1;
+				try {
+					index = ds.insertDepth(depth);
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+					throw new ExecutionException("IllegalAccess", e);
+				}// addYearDepth(year, depth);
 
-				logger.debug("Depth year add {}.", dy);
+				if (index >= 0) {
 
-				if (notify) {
-					eventBroker.send(
-							CoreModelConstants.ICD2_MODEL_DATESESSION_DEPTH_ADD,
-							dy);
+					dy = ds.getDepthYear(index);
+					
+					logger.debug("Depth year added {} at index {}.", dy, index);
+					logger.debug("Current dates are {}, {}", ds.getDepthArray(),
+							ds.getYearArray());
+
+					if (notify) {
+						eventBroker.send(
+								CoreModelConstants.ICD2_MODEL_DATESESSION_DEPTH_ADD,
+								dy);
+					}
+
 				}
 
 				return Status.OK_STATUS;

@@ -80,17 +80,6 @@ public class DateSession implements ModelObject<DateSession, DatingProject> {
 		this.name = name;
 	}
 
-	/**
-	 * 
-	 * @param year
-	 * @param depth
-	 * @return The added depth year object or null if not added
-	 */
-	public DepthYear addYearDepth(int year, double depth) {
-		DepthYear dy = new DepthYear(this, depth, year);
-		return datedDepths.add(dy) ? dy : null;
-	}
-
 	public void removeYearDepth(int year) {
 		datedDepths.removeIf(e -> e.getYear() == year);
 	}
@@ -173,11 +162,11 @@ public class DateSession implements ModelObject<DateSession, DatingProject> {
 			return datedDepths.get(index).getYear();
 		} else {
 			// Outside of the existing index return what would be the date
-			if (index >= datedDepths.size()) {
+			if (index <= datedDepths.size()*-1 || datedDepths.size() <= index) {
 				// Return last date -1
 				return datedDepths.get(datedDepths.size() - 1).getYear() - 1;
 			} else { // index < 0
-				return datedDepths.get((index * -1) + 1).getYear() - 1;
+				return datedDepths.get((index + 1) * -1).getYear();
 			}
 		}
 	}
@@ -208,6 +197,10 @@ public class DateSession implements ModelObject<DateSession, DatingProject> {
 		}
 
 		return result;
+	}
+
+	public DepthYear getDepthYear(int index) {
+		return this.datedDepths.get(index);
 	}
 
 }

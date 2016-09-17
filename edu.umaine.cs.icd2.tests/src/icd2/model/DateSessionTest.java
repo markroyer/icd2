@@ -22,9 +22,9 @@ public class DateSessionTest {
 	}
 
 	@Test
-	public void testAddYearDepth() {
+	public void testAddYearDepth() throws IllegalAccessException {
 
-		dateSession.addYearDepth(2015, .1);
+		dateSession.insertDepth(.1);
 		
 		assertEquals(2016, dateSession.getYear(0));
 		assertEquals(2015, dateSession.getYear(1));

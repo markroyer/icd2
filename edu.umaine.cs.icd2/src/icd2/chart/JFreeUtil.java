@@ -165,6 +165,15 @@ public class JFreeUtil {
 		return chart;
 	}
 
+	/**
+	 * Convert screen coordinate location to chart axis coordinate location.
+	 * 
+	 * @param cp
+	 * @param cdp
+	 * @param sp
+	 * @param point
+	 * @return The plot coordinate location
+	 */
 	public static Point2D getCoordinate(ChartPanel cp, CombinedDomainXYPlot cdp,
 			XYPlot sp, Point point) {
 		final Point2D p = cp

@@ -57,7 +57,12 @@ public class DepthYear implements ModelObject<DepthYear, DateSession> {
 
 	@Override
 	public String getName() {
-		return String.format("(%.2f, %d)", depth, year);
+		return String.format("(%.3f, %d)", depth, year);
+	}
+
+	@Override
+	public String toString() {
+		return getName();
 	}
 	
 }

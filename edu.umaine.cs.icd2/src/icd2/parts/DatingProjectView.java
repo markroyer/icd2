@@ -246,8 +246,13 @@ public class DatingProjectView implements ChartMouseListener {
 					// them
 					DateSession ds = chartModel.getActiveDateSession();
 
+					logger.debug("Depth index is {}. New year is {}",
+							ds.getDepthIndex(xx),
+							ds.getYear(ds.getDepthIndex(xx)));
+
 					// try {
-					new AddDepthMarker().addDepthMarker(project.getChart(), xx,
+					AddDepthMarker.addDepthMarker(eventBroker, undoContext,
+							project.getChart(), xx,
 							ds.getYear(ds.getDepthIndex(xx)), true);
 
 					// int insertionSpot = ds.insertDepth(xx);
@@ -641,9 +646,22 @@ public class DatingProjectView implements ChartMouseListener {
 			EModelService modelService,
 			@UIEventTopic(CoreModelConstants.ICD2_MODEL_DATESESSION_DEPTH_ADD) DepthYear marker) {
 
-		topCp.getChart().fireChartChanged();
+		logger.debug("Add marker occurred {}. Refreshing charts.", marker);
 
-		logger.debug("Add marker {}", marker);
+		IceCombinedDomainXYPlot topPlot = (IceCombinedDomainXYPlot) topCp
+				.getChart().getPlot();
+
+		DateSession ds = this.project.getChart().getActiveDateSession();
+
+		int index = ds.getDepthIndex(marker.getDepth());
+
+		logger.debug("Marker info {}", marker);
+
+		JFreeUtil.addYearMarker(this.project.getChart(), topCp.getChart(),
+				marker.getDepth(), index, true);	
+
+		// topCp.getChart().fireChartChanged();
+
 		dirty.setDirty(true);
 	}
 
