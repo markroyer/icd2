@@ -8,10 +8,12 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.jfree.chart.axis.AxisSpace;
 import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.event.PlotChangeEvent;
 import org.jfree.chart.event.PlotChangeListener;
 import org.jfree.chart.plot.CombinedDomainXYPlot;
 import org.jfree.chart.plot.Marker;
@@ -23,17 +25,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import icd2.model.DateSession;
+import icd2.model.DepthYear;
 
 /**
  * 
  * @author Mark Royer
  * 
  */
-public class IceCombinedDomainXYPlot extends CombinedDomainXYPlot implements
-		Cloneable, PublicCloneable, Serializable, PlotChangeListener {
+public class IceCombinedDomainXYPlot extends CombinedDomainXYPlot
+		implements Cloneable, PublicCloneable, Serializable, PlotChangeListener {
 
-	private static final Logger logger = LoggerFactory
-			.getLogger(IceCombinedDomainXYPlot.class);
+	private static final Logger logger = LoggerFactory.getLogger(IceCombinedDomainXYPlot.class);
 
 	/**
 	 * 
@@ -59,8 +61,7 @@ public class IceCombinedDomainXYPlot extends CombinedDomainXYPlot implements
 	}
 
 	@Override
-	public void draw(Graphics2D g2, Rectangle2D area, Point2D anchor,
-			PlotState parentState, PlotRenderingInfo info) {
+	public void draw(Graphics2D g2, Rectangle2D area, Point2D anchor, PlotState parentState, PlotRenderingInfo info) {
 		try {
 			super.draw(g2, area, anchor, parentState, info);
 		} catch (Exception e) {
@@ -75,8 +76,7 @@ public class IceCombinedDomainXYPlot extends CombinedDomainXYPlot implements
 
 	}
 
-	public void insertYearMarker(int index, YearMarker yearMarker,
-			boolean notify) {
+	public void insertYearMarker(int index, YearMarker yearMarker, boolean notify) {
 		super.addDomainMarker(0, yearMarker, Layer.BACKGROUND, false);
 
 		DateSession ds = yearMarker.getDateSession();
@@ -92,6 +92,18 @@ public class IceCombinedDomainXYPlot extends CombinedDomainXYPlot implements
 
 	public Rectangle2D getDataArea() {
 		return dataArea;
+	}
+
+	public void removeYearMarker(DepthYear yearMarker) {
+
+		int index = Collections.binarySearch(yearMarkers,
+				new YearMarker(yearMarker.getDepth(), yearMarker.getYear(), yearMarker.getParent()),
+				(o1, o2) -> o2.getLabel().compareTo(o1.getLabel()));
+		
+		Marker marker = yearMarkers.get(index);
+		removeDomainMarker(0, marker, Layer.BACKGROUND);
+		yearMarkers.remove(marker);
+		
 	}
 
 }

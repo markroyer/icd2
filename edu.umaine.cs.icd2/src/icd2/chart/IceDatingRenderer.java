@@ -62,7 +62,7 @@ public class IceDatingRenderer extends XYLineAndShapeRenderer {
 
 		// Most of this is very similar to AbstractXYItemRenderer
 		if (marker instanceof YearMarker) {
-
+			
 			YearMarker im = (YearMarker) marker;
 			double start = im.getStartValue();
 			double end = im.getEndValue();
