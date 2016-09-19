@@ -191,7 +191,7 @@ public class DatingProjectView implements ChartMouseListener {
 			@Override
 			public void chartMouseClicked(ChartMouseEvent event) {
 
-				Plot combinedPlotModel = chartModel.getPlots()[0][0];
+				// Plot combinedPlotModel = chartModel.getPlots()[0][0];
 
 				// if (combinedPlotModel.getRangeValues().size() < 1)
 				// return; // Nothing to do
@@ -265,7 +265,7 @@ public class DatingProjectView implements ChartMouseListener {
 					// logger.error(e.getMessage(), e);
 					// }
 
-//					updateLines();
+					// updateLines();
 
 				} else if (MouseEvent.BUTTON3 == event.getTrigger()
 						.getButton()) { // Right
@@ -632,9 +632,10 @@ public class DatingProjectView implements ChartMouseListener {
 			@UIEventTopic(CoreModelConstants.ICD2_MODEL_DATESESSION_DEPTH_REMOVE) DepthYear marker) {
 
 		logger.debug("Remove marker occurred {}. Refreshing charts.", marker);
-		
-		IceCombinedDomainXYPlot plot = (IceCombinedDomainXYPlot)topCp.getChart().getPlot();
-		
+
+		IceCombinedDomainXYPlot plot = (IceCombinedDomainXYPlot) topCp
+				.getChart().getPlot();
+
 		plot.removeYearMarker(marker);
 
 		topCp.getChart().fireChartChanged();
@@ -661,10 +662,10 @@ public class DatingProjectView implements ChartMouseListener {
 		logger.debug("Marker info {}", marker);
 
 		JFreeUtil.addYearMarker(this.project.getChart(), topCp.getChart(),
-				marker.getDepth(), index, true);	
+				marker.getDepth(), index, true);
 
 		updateLines();
-		
+
 		// topCp.getChart().fireChartChanged();
 
 		dirty.setDirty(true);

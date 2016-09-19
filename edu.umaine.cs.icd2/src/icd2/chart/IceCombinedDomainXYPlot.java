@@ -13,7 +13,6 @@ import java.util.List;
 
 import org.jfree.chart.axis.AxisSpace;
 import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.event.PlotChangeEvent;
 import org.jfree.chart.event.PlotChangeListener;
 import org.jfree.chart.plot.CombinedDomainXYPlot;
 import org.jfree.chart.plot.Marker;
