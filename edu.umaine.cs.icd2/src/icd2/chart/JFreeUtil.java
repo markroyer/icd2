@@ -196,7 +196,7 @@ public class JFreeUtil {
 
 		DateSession ds = chartModel.getActiveDateSession();
 
-		YearMarker newMarker = new YearMarker(xx, index, ds);
+		YearMarker newMarker = new YearMarker(xx, String.valueOf(ds.getYear(index)), ds);
 
 		plot.insertYearMarker(index, newMarker, notify);
 		// plot.insertYearMarker(index, newMarker, notify);

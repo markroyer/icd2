@@ -32,10 +32,11 @@ import icd2.model.DepthYear;
  * @author Mark Royer
  * 
  */
-public class IceCombinedDomainXYPlot extends CombinedDomainXYPlot
-		implements Cloneable, PublicCloneable, Serializable, PlotChangeListener {
+public class IceCombinedDomainXYPlot extends CombinedDomainXYPlot implements
+		Cloneable, PublicCloneable, Serializable, PlotChangeListener {
 
-	private static final Logger logger = LoggerFactory.getLogger(IceCombinedDomainXYPlot.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(IceCombinedDomainXYPlot.class);
 
 	/**
 	 * 
@@ -61,7 +62,8 @@ public class IceCombinedDomainXYPlot extends CombinedDomainXYPlot
 	}
 
 	@Override
-	public void draw(Graphics2D g2, Rectangle2D area, Point2D anchor, PlotState parentState, PlotRenderingInfo info) {
+	public void draw(Graphics2D g2, Rectangle2D area, Point2D anchor,
+			PlotState parentState, PlotRenderingInfo info) {
 		try {
 			super.draw(g2, area, anchor, parentState, info);
 		} catch (Exception e) {
@@ -76,7 +78,8 @@ public class IceCombinedDomainXYPlot extends CombinedDomainXYPlot
 
 	}
 
-	public void insertYearMarker(int index, YearMarker yearMarker, boolean notify) {
+	public void insertYearMarker(int index, YearMarker yearMarker,
+			boolean notify) {
 		super.addDomainMarker(0, yearMarker, Layer.BACKGROUND, false);
 
 		DateSession ds = yearMarker.getDateSession();
@@ -94,16 +97,21 @@ public class IceCombinedDomainXYPlot extends CombinedDomainXYPlot
 		return dataArea;
 	}
 
-	public void removeYearMarker(DepthYear yearMarker) {
+	public void removeYearMarker(DepthYear depthMarker) {
+
+		logger.debug("Removing year marker {} from {}.", depthMarker,
+				yearMarkers);
 
 		int index = Collections.binarySearch(yearMarkers,
-				new YearMarker(yearMarker.getDepth(), yearMarker.getYear(), yearMarker.getParent()),
+				new YearMarker(depthMarker.getDepth(),
+						String.valueOf(depthMarker.getYear()),
+						depthMarker.getParent()),
 				(o1, o2) -> o2.getLabel().compareTo(o1.getLabel()));
-		
+
 		Marker marker = yearMarkers.get(index);
 		removeDomainMarker(0, marker, Layer.BACKGROUND);
-		yearMarkers.remove(marker);
-		
+		yearMarkers.remove(index);
+
 	}
 
 }

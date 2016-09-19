@@ -33,14 +33,13 @@ public class YearMarker extends IntervalMarker {
 
 	protected DateSession dateSession;
 
-	public YearMarker(double xPos, int label, DateSession ds) {
+	public YearMarker(double xPos, String label, DateSession ds) {
 		super(xPos, xPos);
 		dateSession = ds;
-		setLabel(String.valueOf(dateSession.getYear(label)));
+		setLabel(label);
 		setLabelAnchor(RectangleAnchor.TOP_LEFT);
 		setLabelTextAnchor(TextAnchor.BOTTOM_LEFT);
-		logger.info("Created year marker at {} year.",
-				dateSession.getYear(label));
+		logger.info("Created year marker at {} year.", getLabel());
 		setAlpha(1f);
 		setPaint(Color.BLACK);
 		setStroke(new BasicStroke(0f));
