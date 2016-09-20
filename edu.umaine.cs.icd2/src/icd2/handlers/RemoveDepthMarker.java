@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import icd2.model.CoreModelConstants;
+import icd2.model.DateSession.DateSessionException;
 import icd2.model.DepthYear;
 import icd2.model.Workspace;
 
@@ -22,7 +23,13 @@ public class RemoveDepthMarker {
 	public void execute(Shell shell, IEventBroker eventBroker, Workspace workspace,
 			@Named(CoreModelConstants.TREE_ITEM_SELECTION) @Optional DepthYear marker) {
 	
-			marker.getParent().removeYearDepth(marker.getYear());
+			try {
+				
+				marker.getParent().removeYearDepth(marker.getYear());
+			
+			} catch (DateSessionException e) {
+				logger.debug("Unable to remove core top year.", e);
+			}
 		
 			eventBroker.post(CoreModelConstants.ICD2_MODEL_DATESESSION_DEPTH_REMOVE, marker);
 

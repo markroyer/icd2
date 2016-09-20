@@ -38,6 +38,13 @@ public class DateSession implements ModelObject<DateSession, DatingProject> {
 			}
 		}
 	};
+	
+	public class DateSessionException extends Exception {
+		/**
+		 * For serialization
+		 */
+		private static final long serialVersionUID = 1L;
+	}
 
 	private DatingProject parent;
 
@@ -80,7 +87,11 @@ public class DateSession implements ModelObject<DateSession, DatingProject> {
 		this.name = name;
 	}
 
-	public void removeYearDepth(int year) {
+	public void removeYearDepth(int year) throws DateSessionException {
+		if (datedDepths.get(0).getYear() == year) {
+			throw new DateSessionException();
+		}
+		
 		datedDepths.removeIf(e -> e.getYear() == year);
 	}
 

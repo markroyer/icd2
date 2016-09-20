@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import icd2.model.Chart;
 import icd2.model.CoreModelConstants;
 import icd2.model.DateSession;
+import icd2.model.DateSession.DateSessionException;
 import icd2.model.DepthYear;
 
 public class AddDepthMarker {
@@ -80,6 +81,8 @@ public class AddDepthMarker {
 			public IStatus undo(IProgressMonitor monitor, IAdaptable info)
 					throws ExecutionException {
 
+				try {
+				
 				ds.removeYearDepth(year);
 				logger.debug("Depth year removed {}.", dy);
 
@@ -87,6 +90,10 @@ public class AddDepthMarker {
 					eventBroker.send(
 							CoreModelConstants.ICD2_MODEL_DATESESSION_DEPTH_REMOVE,
 							dy);
+				}
+				
+				} catch (DateSessionException e) {
+					logger.debug("Unable to remove date session top year.", dy);
 				}
 
 				return Status.OK_STATUS;
