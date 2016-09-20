@@ -96,13 +96,7 @@ public class AddDepthMarker {
 			public IStatus redo(IProgressMonitor monitor, IAdaptable info)
 					throws ExecutionException {
 
-				int index = -1;
-				try {
-					index = ds.insertDepth(depth);
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-					throw new ExecutionException("IllegalAccess", e);
-				}// addYearDepth(year, depth);
+				int index = ds.insertDepth(depth);
 
 				if (index >= 0) {
 

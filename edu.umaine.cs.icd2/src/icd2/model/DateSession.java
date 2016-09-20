@@ -90,9 +90,8 @@ public class DateSession implements ModelObject<DateSession, DatingProject> {
 	 * @param depth
 	 * @return The index it was inserted at or a negative number if it was not
 	 *         inserted.
-	 * @throws IllegalAccessException
 	 */
-	public int insertDepth(double depth) throws IllegalAccessException {
+	public int insertDepth(double depth) {
 		int i = datedDepths.size();
 
 		// All sessions start with a top depth of 0
