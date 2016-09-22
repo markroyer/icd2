@@ -3,6 +3,7 @@ package icd2.handlers;
 
 import javax.inject.Named;
 
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.operations.AbstractOperation;
 import org.eclipse.core.commands.operations.IOperationHistory;
@@ -40,16 +41,26 @@ public class AddDepthMarker {
 
 		Chart chart = session.getParent().getChart();
 
+		DescriptiveStatistics ds = new DescriptiveStatistics(
+				session.getDepthArray());
+
 		InputDialog dlg = new InputDialog(shell, "Year depth?",
-				"Please enter the depth of the new marker.", "initVal",
-				new IInputValidator() {
+				"Please enter the depth of the new marker.",
+				String.format("%.2f",ds.getMean()), new IInputValidator() {
 					@Override
-					public String isValid(String newText) {
+					public String isValid(String value) {
 						try {
-							Double.parseDouble(newText);
+							double dVal = Double.parseDouble(value);
+							if (dVal < 0) {
+								return "Depth value must be positive.";
+							}
 							return null;
 						} catch (NumberFormatException e) {
-							return e.getMessage();
+							logger.debug("Invalid depth. Message is '{}'",
+									e.getMessage());
+							return String.format(
+									"'%s' is not a valid number.  Please enter a positive depth.",
+									value);
 						}
 					}
 				});
