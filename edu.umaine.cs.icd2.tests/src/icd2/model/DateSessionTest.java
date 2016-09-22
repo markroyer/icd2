@@ -4,6 +4,7 @@
 package icd2.model;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -24,13 +25,18 @@ public class DateSessionTest {
 	}
 
 	@Test
-	public void testAddYearDepth() throws IllegalAccessException {
+	public void testAddYearDepth() throws DateSessionException {
 
 		dateSession.insertDepth(.1);
 		
 		assertEquals(2016, dateSession.getYear(0));
 		assertEquals(2015, dateSession.getYear(1));
-
+	}
+	
+	@Test(expected=DateSessionException.class)
+	public void testNegativeDepth() throws DateSessionException {
+		// Should throw exception since negative depths do not exist in cores
+		dateSession.insertDepth(-0.1);
 	}
 	
 	@Test(expected=DateSessionException.class)

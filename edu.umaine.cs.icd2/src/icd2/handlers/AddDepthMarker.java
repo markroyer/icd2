@@ -82,16 +82,16 @@ public class AddDepthMarker {
 					throws ExecutionException {
 
 				try {
-				
-				ds.removeYearDepth(year);
-				logger.debug("Depth year removed {}.", dy);
 
-				if (notify) {
-					eventBroker.send(
-							CoreModelConstants.ICD2_MODEL_DATESESSION_DEPTH_REMOVE,
-							dy);
-				}
-				
+					ds.removeYearDepth(year);
+					logger.debug("Depth year removed {}.", dy);
+
+					if (notify) {
+						eventBroker.send(
+								CoreModelConstants.ICD2_MODEL_DATESESSION_DEPTH_REMOVE,
+								dy);
+					}
+
 				} catch (DateSessionException e) {
 					logger.debug("Unable to remove date session top year.", dy);
 				}
@@ -103,22 +103,28 @@ public class AddDepthMarker {
 			public IStatus redo(IProgressMonitor monitor, IAdaptable info)
 					throws ExecutionException {
 
-				int index = ds.insertDepth(depth);
+				try {
 
-				if (index >= 0) {
+					int index = ds.insertDepth(depth);
 
-					dy = ds.getDepthYear(index);
-					
-					logger.debug("Depth year added {} at index {}.", dy, index);
-					logger.debug("Current dates are {}, {}", ds.getDepthArray(),
-							ds.getYearArray());
+					if (index >= 0) {
 
-					if (notify) {
-						eventBroker.send(
-								CoreModelConstants.ICD2_MODEL_DATESESSION_DEPTH_ADD,
-								dy);
+						dy = ds.getDepthYear(index);
+
+						logger.debug("Depth year added {} at index {}.", dy,
+								index);
+						logger.debug("Current dates are {}, {}",
+								ds.getDepthArray(), ds.getYearArray());
+
+						if (notify) {
+							eventBroker.send(
+									CoreModelConstants.ICD2_MODEL_DATESESSION_DEPTH_ADD,
+									dy);
+						}
+
 					}
-
+				} catch (DateSessionException e) {
+					logger.error("Invalid date depth {}.", depth, e);
 				}
 
 				return Status.OK_STATUS;

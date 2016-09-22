@@ -38,7 +38,7 @@ public class DateSession implements ModelObject<DateSession, DatingProject> {
 			}
 		}
 	};
-	
+
 	public class DateSessionException extends Exception {
 		/**
 		 * For serialization
@@ -91,7 +91,7 @@ public class DateSession implements ModelObject<DateSession, DatingProject> {
 		if (datedDepths.get(0).getYear() == year) {
 			throw new DateSessionException();
 		}
-		
+
 		datedDepths.removeIf(e -> e.getYear() == year);
 	}
 
@@ -101,8 +101,13 @@ public class DateSession implements ModelObject<DateSession, DatingProject> {
 	 * @param depth
 	 * @return The index it was inserted at or a negative number if it was not
 	 *         inserted.
+	 * @throws DateSessionException
+	 *             Thrown if depth is negative
 	 */
-	public int insertDepth(double depth) {
+	public int insertDepth(double depth) throws DateSessionException {
+		if (depth < 0) {
+			throw new DateSessionException();
+		}
 		int i = datedDepths.size();
 
 		// All sessions start with a top depth of 0
@@ -172,7 +177,8 @@ public class DateSession implements ModelObject<DateSession, DatingProject> {
 			return datedDepths.get(index).getYear();
 		} else {
 			// Outside of the existing index return what would be the date
-			if (index <= datedDepths.size()*-1 || datedDepths.size() <= index) {
+			if (index <= datedDepths.size() * -1
+					|| datedDepths.size() <= index) {
 				// Return last date -1
 				return datedDepths.get(datedDepths.size() - 1).getYear() - 1;
 			} else { // index < 0
