@@ -356,4 +356,18 @@ public class WorkspaceView {
 		viewer.collapseToLevel(project, TreeViewer.ALL_LEVELS);
 		viewer.refresh(project);
 	}
+	
+	@Inject
+	@Optional
+	public void onAddDateMarker(
+			@UIEventTopic(CoreModelConstants.ICD2_MODEL_DATESESSION_DEPTH_ADD) DepthYear marker) {
+		viewer.refresh(marker.getParent());
+	}
+	
+	@Inject
+	@Optional
+	public void onRemoveDateMarker(
+			@UIEventTopic(CoreModelConstants.ICD2_MODEL_DATESESSION_DEPTH_REMOVE) DepthYear marker) {
+		viewer.refresh(marker.getParent());
+	}
 }
