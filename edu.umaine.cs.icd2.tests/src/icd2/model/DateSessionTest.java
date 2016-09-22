@@ -27,10 +27,28 @@ public class DateSessionTest {
 	@Test
 	public void testAddYearDepth() throws DateSessionException {
 
-		dateSession.insertDepth(.1);
+		int insertSpot = dateSession.insertDepth(.1);
 		
+		assertEquals(1, insertSpot);
 		assertEquals(2016, dateSession.getYear(0));
 		assertEquals(2015, dateSession.getYear(1));
+		assertEquals(2, dateSession.getSize());
+		
+		insertSpot = dateSession.insertDepth(1);
+		
+		assertEquals(2, insertSpot);
+		assertEquals(2016, dateSession.getYear(0));
+		assertEquals(2015, dateSession.getYear(1));
+		assertEquals(2014, dateSession.getYear(2));
+		assertEquals(3, dateSession.getSize());
+		
+		
+		// 0 is already dated, so should be ignored
+		insertSpot = dateSession.insertDepth(0);
+		
+		assertEquals(0, insertSpot);
+		assertEquals(3, dateSession.getSize());
+		
 	}
 	
 	@Test(expected=DateSessionException.class)
@@ -52,6 +70,24 @@ public class DateSessionTest {
 		dateSession.insertDepth(.1);
 		dateSession.removeYearDepth(2015);
 		assertEquals(2016, dateSession.getYear(0));
+	}
+	
+	@Test
+	public void testGetDepthIndex() throws DateSessionException {
+		
+		assertEquals(0, dateSession.getDepthIndex(0));
+		
+		dateSession.insertDepth(.1);
+		
+		assertEquals(0, dateSession.getDepthIndex(0));
+		assertEquals(1, dateSession.getDepthIndex(.1));
+		
+		dateSession.insertDepth(.2);
+		
+		assertEquals(0, dateSession.getDepthIndex(0));
+		assertEquals(1, dateSession.getDepthIndex(.1));
+		assertEquals(2, dateSession.getDepthIndex(.2));
+		
 	}
 
 }

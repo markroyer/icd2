@@ -87,6 +87,14 @@ public class DateSession implements ModelObject<DateSession, DatingProject> {
 		this.name = name;
 	}
 
+	/**
+	 * Removes the given year from the date session.
+	 * 
+	 * @param year
+	 *            The year to remove
+	 * @throws DateSessionException
+	 *             Thrown if attempting to remove the top date
+	 */
 	public void removeYearDepth(int year) throws DateSessionException {
 		if (datedDepths.get(0).getYear() == year) {
 			throw new DateSessionException();
@@ -96,11 +104,12 @@ public class DateSession implements ModelObject<DateSession, DatingProject> {
 	}
 
 	/**
-	 * This will insert a new year value based on the proper position of xx.
+	 * This will insert a new year value based on the proper position of xx. If
+	 * a date already exists at the same location, then the insertion of the new
+	 * date is ignored, and the index of the existing date is returned.
 	 * 
 	 * @param depth
-	 * @return The index it was inserted at or a negative number if it was not
-	 *         inserted.
+	 * @return The index it was inserted at
 	 * @throws DateSessionException
 	 *             Thrown if depth is negative
 	 */
@@ -117,7 +126,7 @@ public class DateSession implements ModelObject<DateSession, DatingProject> {
 		if (0 <= i && i < datedDepths.size()) {
 			logger.info("A depth at position {} has already been dated.",
 					depth);
-			return -1;
+			return i;
 		} else if (i < 0) {
 			i = -1 * (i + 1); // Insertion point is (-(insertion point) - 1)
 		} // Otherwise it's at position depths.size() - the last depth
@@ -133,12 +142,26 @@ public class DateSession implements ModelObject<DateSession, DatingProject> {
 		datedDepths.add(i, new DepthYear(this, depth,
 				datedDepths.get(i - 1).getYear() - 1));
 
-		// Shift the rest of the years by one
-		for (int j = i + 1; j < datedDepths.size(); j++) {
-			datedDepths.get(j).setYear(datedDepths.get(j).getYear() - 1);
-		}
+		adjustYearDates(i + 1, datedDepths.size(), -1);
 
 		return i;
+	}
+
+	/**
+	 * Adds the given amount to the dates in range of start <= i < end.
+	 * 
+	 * @param start
+	 *            The index to start at
+	 * @param end
+	 *            The ending index
+	 * @param amnt
+	 *            The amount to adjust the dates by
+	 */
+	private void adjustYearDates(int start, int end, int amnt) {
+		// Shift the rest of the years by one
+		for (int j = start; j < end; j++) {
+			datedDepths.get(j).setYear(datedDepths.get(j).getYear() + amnt);
+		}
 	}
 
 	/**
