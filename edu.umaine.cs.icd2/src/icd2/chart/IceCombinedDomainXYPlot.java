@@ -96,7 +96,7 @@ public class IceCombinedDomainXYPlot extends CombinedDomainXYPlot implements
 		return dataArea;
 	}
 
-	public void removeYearMarker(DepthYear depthMarker) {
+	public void removeYearMarker(DepthYear depthMarker, boolean notify) {
 
 		logger.debug("Removing year marker {} from {}.", depthMarker,
 				yearMarkers);
@@ -110,6 +110,14 @@ public class IceCombinedDomainXYPlot extends CombinedDomainXYPlot implements
 		Marker marker = yearMarkers.get(index);
 		removeDomainMarker(0, marker, Layer.BACKGROUND);
 		yearMarkers.remove(index);
+		DateSession ds = depthMarker.getParent();
+		
+		for (int i = index; i < ds.getSize() && i < yearMarkers.size(); i++)
+			yearMarkers.get(i).setLabel(String.valueOf(ds.getYear(i)), false);
+
+		if (notify) {
+			fireChangeEvent();
+		}
 
 	}
 

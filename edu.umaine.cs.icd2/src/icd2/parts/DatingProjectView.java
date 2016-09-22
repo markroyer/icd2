@@ -636,9 +636,8 @@ public class DatingProjectView implements ChartMouseListener {
 		IceCombinedDomainXYPlot plot = (IceCombinedDomainXYPlot) topCp
 				.getChart().getPlot();
 
-		plot.removeYearMarker(marker);
+		plot.removeYearMarker(marker, true);
 
-		topCp.getChart().fireChartChanged();
 		updateLines();
 
 		dirty.setDirty(true);

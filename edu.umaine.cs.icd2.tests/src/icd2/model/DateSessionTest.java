@@ -72,6 +72,18 @@ public class DateSessionTest {
 		dateSession.insertDepth(.1);
 		dateSession.removeYearDepth(2015);
 		assertEquals(2016, dateSession.getYear(0));
+		assertEquals(1, dateSession.getSize());
+		
+		// Try 2
+		
+		dateSession.insertDepth(.1);
+		dateSession.insertDepth(.2);
+		dateSession.removeYearDepth(2014);
+		assertEquals(2, dateSession.getSize());
+		assertEquals(2015, dateSession.getYear(1));
+		dateSession.removeYearDepth(2015);
+		assertEquals(1, dateSession.getSize());
+		
 	}
 	
 	@Test
@@ -108,3 +120,4 @@ public class DateSessionTest {
 	}
 
 }
+
