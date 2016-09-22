@@ -19,9 +19,11 @@ public class DateSessionTest {
 
 	DateSession dateSession;
 
+	private static final int TOPYEAR = 2016;
+	
 	@Before
 	public void setUp() {
-		dateSession = new DateSession(null, "Test", 2016);
+		dateSession = new DateSession(null, "Test", TOPYEAR);
 	}
 
 	@Test
@@ -87,6 +89,21 @@ public class DateSessionTest {
 		assertEquals(0, dateSession.getDepthIndex(0));
 		assertEquals(1, dateSession.getDepthIndex(.1));
 		assertEquals(2, dateSession.getDepthIndex(.2));
+		
+	}
+	
+	@Test
+	public void testYearIndex() throws DateSessionException {
+		
+		assertEquals(0, dateSession.yearIndex(TOPYEAR));
+		
+		dateSession.insertDepth(.1);
+		
+		assertEquals(0, dateSession.yearIndex(TOPYEAR));
+		assertEquals(1, dateSession.yearIndex(TOPYEAR-1));
+		
+		// Test one that doesn't exist in the date session
+		assertEquals(-3, dateSession.yearIndex(TOPYEAR-2));
 		
 	}
 

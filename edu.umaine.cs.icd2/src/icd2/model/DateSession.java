@@ -88,19 +88,40 @@ public class DateSession implements ModelObject<DateSession, DatingProject> {
 	}
 
 	/**
-	 * Removes the given year from the date session.
+	 * Removes the given year from the date session. Increases the remaining
+	 * dates that are lower in the core by +1 year.
 	 * 
 	 * @param year
 	 *            The year to remove
 	 * @throws DateSessionException
-	 *             Thrown if attempting to remove the top date
+	 *             Thrown if attempting to remove the top date or if the year
+	 *             doesn't exist
 	 */
 	public void removeYearDepth(int year) throws DateSessionException {
 		if (datedDepths.get(0).getYear() == year) {
 			throw new DateSessionException();
 		}
 
-		datedDepths.removeIf(e -> e.getYear() == year);
+		int index = yearIndex(year);
+		// Year didn't exist or top year
+		if (index < 1)
+			throw new DateSessionException();
+
+		datedDepths.remove(index);
+
+		adjustYearDates(index, datedDepths.size(), +1);
+	}
+
+	/**
+	 * @param year
+	 *            Year to locate
+	 * @return The index of the year in the date session or (-(insertion point)
+	 *         - 1) if not in the date session
+	 */
+	public int yearIndex(int year) {
+		return Collections.binarySearch(datedDepths,
+				new DepthYear(this, 0, year),
+				(d1, d2) -> new Integer(d2.getYear()).compareTo(d1.getYear()));
 	}
 
 	/**
