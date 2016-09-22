@@ -15,9 +15,9 @@ import icd2.model.DateSession.DateSessionException;
 import icd2.model.DepthYear;
 import icd2.model.Workspace;
 
-public class RemoveDepthMarker {
+public class RemoveDepthMarkerHandler {
 	
-	private static final Logger logger = LoggerFactory.getLogger(RemoveDepthMarker.class);
+	private static final Logger logger = LoggerFactory.getLogger(RemoveDepthMarkerHandler.class);
 	
 	@Execute
 	public void execute(Shell shell, IEventBroker eventBroker, Workspace workspace,

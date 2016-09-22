@@ -29,10 +29,10 @@ import icd2.model.DateSession;
 import icd2.model.DateSession.DateSessionException;
 import icd2.model.DepthYear;
 
-public class AddDepthMarker {
+public class AddDepthMarkerHandler {
 
 	private static final Logger logger = LoggerFactory
-			.getLogger(AddDepthMarker.class);
+			.getLogger(AddDepthMarkerHandler.class);
 
 	@Execute
 	public void execute(Shell shell, IEventBroker eventBroker, IUndoContext ctx,

@@ -57,7 +57,7 @@ import icd2.chart.JFreeUtil;
 import icd2.chart.MouseZoomListener;
 import icd2.chart.PanningMouseListener;
 import icd2.chart.YearMarker;
-import icd2.handlers.AddDepthMarker;
+import icd2.handlers.AddDepthMarkerHandler;
 import icd2.model.Chart;
 import icd2.model.CoreData;
 import icd2.model.CoreModelConstants;
@@ -248,7 +248,7 @@ public class DatingProjectView implements ChartMouseListener {
 							ds.getYear(ds.getDepthIndex(xx)));
 
 					// try {
-					AddDepthMarker.addDepthMarker(eventBroker, undoContext,
+					AddDepthMarkerHandler.addDepthMarker(eventBroker, undoContext,
 							project.getChart(), xx,
 							ds.getYear(ds.getDepthIndex(xx)), true);
 
