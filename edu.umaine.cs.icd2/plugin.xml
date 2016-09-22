@@ -37,8 +37,10 @@
          	</with>
         </definition>
         <definition id="edu.umaine.cs.icd2.DepthYear.selectionSet">
-        	<with variable="itemAtMouseClick">
-            	<instanceof value="icd2.model.DepthYear"></instanceof>
+        	<with variable="treeItemsSelected">
+        		<iterate ifEmpty="false">
+            		<instanceof value="icd2.model.DepthYear"></instanceof>
+            	</iterate>
          	</with>
         </definition>
         <definition id="edu.umaine.cs.icd2.DateSession.selectionSet">

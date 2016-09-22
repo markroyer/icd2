@@ -15,7 +15,16 @@ public class CoreModelConstants {
 	public static final String ON_NEW_DATING_PROJECT = "onNewDatingProject";
 	public static final String REMOVED_DATING_PROJECT = "icd2/model/RemovedDatingProject";
 
+	/**
+	 * Use core expressions to get this value in plugin.xml
+	 */
 	public static final String ITEM_AT_MOUSE_CLICK = "itemAtMouseClick";
+	
+	/**
+	 * Use core expressions to get the selected items in plugin.xml
+	 */
+	public static final String TREE_ITEMS_SELECTED = "treeItemsSelected";
+
 	public static final String TREE_ITEM_CHANGE_EVENT = "treeItemChangeEvent";
 	public static final String TREE_ITEM_SELECTION = "treeItem/selectedItem";
 	public static final String DISPLAY_PROJECT_EVENT = "displayProjectEvent";
