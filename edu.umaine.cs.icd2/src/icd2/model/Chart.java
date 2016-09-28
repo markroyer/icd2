@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 @EditableObject(name = "Chart", description = "Graphically displays data.")
 public class Chart implements PlotParent<Chart, DatingProject> {
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(Chart.class);
 
 	private DatingProject parent;

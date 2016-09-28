@@ -248,8 +248,8 @@ public class DatingProjectView implements ChartMouseListener {
 							ds.getYear(ds.getDepthIndex(xx)));
 
 					// try {
-					AddDepthMarkerHandler.addDepthMarker(eventBroker, undoContext,
-							project.getChart(), xx,
+					AddDepthMarkerHandler.addDepthMarker(eventBroker,
+							undoContext, project.getChart(), xx,
 							ds.getYear(ds.getDepthIndex(xx)), true);
 
 					// int insertionSpot = ds.insertDepth(xx);
@@ -651,9 +651,6 @@ public class DatingProjectView implements ChartMouseListener {
 
 		logger.debug("Add marker occurred {}. Refreshing charts.", marker);
 
-		IceCombinedDomainXYPlot topPlot = (IceCombinedDomainXYPlot) topCp
-				.getChart().getPlot();
-
 		DateSession ds = this.project.getChart().getActiveDateSession();
 
 		int index = ds.getDepthIndex(marker.getDepth());
@@ -663,9 +660,7 @@ public class DatingProjectView implements ChartMouseListener {
 		JFreeUtil.addYearMarker(this.project.getChart(), topCp.getChart(),
 				marker.getDepth(), index, true);
 
-		updateLines();
-
-		// topCp.getChart().fireChartChanged();
+		updateLines(); // Resample...
 
 		dirty.setDirty(true);
 	}

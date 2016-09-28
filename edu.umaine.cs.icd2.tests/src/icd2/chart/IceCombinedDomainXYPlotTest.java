@@ -8,10 +8,7 @@ public class IceCombinedDomainXYPlotTest {
 
 	@Test
 	public void test() {
-//		fail("Not yet implemented");
-		
-		IceCombinedDomainXYPlot icd = new IceCombinedDomainXYPlot();
-		
+		// TODO Just an example for now...
 		assertTrue(true);
 		
 	}
