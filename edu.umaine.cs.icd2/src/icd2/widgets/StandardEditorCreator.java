@@ -129,10 +129,10 @@ public class StandardEditorCreator {
 			@SuppressWarnings("unchecked")
 			ModelValueProvider<Object, Object> mvp = (ModelValueProvider<Object, Object>) editable.valueProvider()
 					.newInstance();
-			
+
 			@SuppressWarnings("unchecked")
 			Class<Object> clazz = (Class<Object>) value.getClass();
-			
+
 			combo.setInput((mvp).getValues(clazz, p));
 
 			combo.setLabelProvider(new LabelProvider() {
@@ -231,7 +231,8 @@ public class StandardEditorCreator {
 
 					ao.addContext(ctx);
 
-					IStatus is = operationHistory.execute(ao, null, null);
+					// IStatus is =
+					operationHistory.execute(ao, null, null);
 
 					eventBroker.send(UIEvents.REQUEST_ENABLEMENT_UPDATE_TOPIC, UIEvents.ALL_ELEMENT_ID);
 
@@ -345,7 +346,8 @@ public class StandardEditorCreator {
 
 					ao.addContext(ctx);
 
-					IStatus is = operationHistory.execute(ao, null, null);
+					// IStatus is =
+					operationHistory.execute(ao, null, null);
 
 					eventBroker.send(UIEvents.REQUEST_ENABLEMENT_UPDATE_TOPIC, UIEvents.ALL_ELEMENT_ID);
 
@@ -379,7 +381,7 @@ public class StandardEditorCreator {
 		Text text = new Text(container, SWT.SINGLE);
 		text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, true));
 
-		IObservableMap attributesMap = new WritableMap<>();
+		IObservableMap<Object, Object> attributesMap = new WritableMap<>();
 		DataBindingContext dbc = new DataBindingContext();
 
 		IOperationHistory operationHistory = OperationHistoryFactory.getOperationHistory();
@@ -432,14 +434,14 @@ public class StandardEditorCreator {
 		ModelObject<?, ?> p;
 		Field field;
 		IEventBroker eventBroker;
-		IObservableMap attributesMap;
+		IObservableMap<Object, Object> attributesMap;
 		IOperationHistory operationHistory;
 		IUndoContext undoContext;
 		Text text;
 
 		public TextChangeListener(Editable editable, ModelObject<?, ?> p, Field field, IEventBroker eventBroker,
-				IObservableMap attributesMap, IOperationHistory operationHistory, final IUndoContext undoContext,
-				Text text) {
+				IObservableMap<Object, Object> attributesMap, IOperationHistory operationHistory,
+				final IUndoContext undoContext, Text text) {
 			this.editable = editable;
 			this.p = p;
 			this.field = field;
@@ -498,7 +500,7 @@ public class StandardEditorCreator {
 		Button button = new Button(container, SWT.PUSH);
 		button.setText("Apply");
 
-		IObservableMap attributesMap = new WritableMap();
+		IObservableMap<Object, Object> attributesMap = new WritableMap<>();
 		DataBindingContext dbc = new DataBindingContext();
 
 		IOperationHistory operationHistory = OperationHistoryFactory.getOperationHistory();
@@ -542,8 +544,8 @@ public class StandardEditorCreator {
 						ModelModifier<ModelObject<?, ?>, Object> mm = (ModelModifier<ModelObject<?, ?>, Object>) editable
 								.method().newInstance();
 
-						executeStringConfirm(editable, p, field, eventBroker, attributesMap, operationHistory,
-								ctx, mm, text);
+						executeStringConfirm(editable, p, field, eventBroker, attributesMap, operationHistory, ctx, mm,
+								text);
 					} catch (InstantiationException | IllegalAccessException e) {
 						logger.error(e.getMessage(), e);
 					}
@@ -560,8 +562,8 @@ public class StandardEditorCreator {
 							@SuppressWarnings("unchecked")
 							ModelModifier<ModelObject<?, ?>, Object> mm = (ModelModifier<ModelObject<?, ?>, Object>) editable
 									.method().newInstance();
-							executeStringConfirm(editable, p, field, eventBroker, attributesMap, operationHistory,
-									ctx, mm, text);
+							executeStringConfirm(editable, p, field, eventBroker, attributesMap, operationHistory, ctx,
+									mm, text);
 
 						} catch (InstantiationException | IllegalAccessException e1) {
 							logger.error(e1.getMessage(), e1);
@@ -582,8 +584,8 @@ public class StandardEditorCreator {
 	}
 
 	private void executeStringConfirm(Editable editable, ModelObject<?, ?> p, Field field, IEventBroker eventBroker,
-			IObservableMap attributesMap, IOperationHistory operationHistory, final IUndoContext undoContext,
-			ModelModifier<ModelObject<?, ?>, Object> mm, Text text) {
+			IObservableMap<Object, Object> attributesMap, IOperationHistory operationHistory,
+			final IUndoContext undoContext, ModelModifier<ModelObject<?, ?>, Object> mm, Text text) {
 
 		logger.info("Using {} as value to set on model object", attributesMap.get(text));
 
@@ -623,7 +625,8 @@ public class StandardEditorCreator {
 
 			ao.addContext(undoContext);
 
-			IStatus is = operationHistory.execute(ao, null, null);
+			// IStatus is =
+			operationHistory.execute(ao, null, null);
 
 			eventBroker.send(UIEvents.REQUEST_ENABLEMENT_UPDATE_TOPIC, UIEvents.ALL_ELEMENT_ID);
 		} catch (ExecutionException e1) {
@@ -631,35 +634,37 @@ public class StandardEditorCreator {
 		}
 	}
 
-//	private IUndoContext getUndoContext(IEclipseContext ctx) {
-//		IUndoContext undoContext = ctx.get();//IUndoContext.class);
-//
-//		IEclipseContext cur = ctx;
-//		while(cur != null) {
-//			System.out.println(cur.getClass() + " " + cur);
-//			cur = cur.getParent();
-//		}
-//		
-//		if (undoContext == null) {
-//			logger.debug("Context was null.  Creating a new GlobalUndoContext...");
-//			undoContext = new GlobalUndoContext();
-//			ctx.set(IUndoContext.class, undoContext);
-//		}
-//
-//		return undoContext;
-//	}
+	// private IUndoContext getUndoContext(IEclipseContext ctx) {
+	// IUndoContext undoContext = ctx.get();//IUndoContext.class);
+	//
+	// IEclipseContext cur = ctx;
+	// while(cur != null) {
+	// System.out.println(cur.getClass() + " " + cur);
+	// cur = cur.getParent();
+	// }
+	//
+	// if (undoContext == null) {
+	// logger.debug("Context was null. Creating a new GlobalUndoContext...");
+	// undoContext = new GlobalUndoContext();
+	// ctx.set(IUndoContext.class, undoContext);
+	// }
+	//
+	// return undoContext;
+	// }
 
 	private <T extends ModelObject<?, ?>> Binding bindAndValidateCoreText(T p, Text coreNameText, ModelValidator<T> mv,
-			IObservableMap attributesMap, DataBindingContext dctx, Control[] widgets) {
+			IObservableMap<Object, Object> attributesMap, DataBindingContext dctx, Control[] widgets) {
 
-		IObservableValue coreNameTextValue = WidgetProperties.text(SWT.Modify).observe(coreNameText);
+		@SuppressWarnings("unchecked")
+		IObservableValue<Object> coreNameTextValue = (IObservableValue<Object>) WidgetProperties.text(SWT.Modify)
+				.observe(coreNameText);
 
 		IValidator validator = mv.create(p, widgets);
 
 		UpdateValueStrategy strategy = new UpdateValueStrategy();
 		strategy.setBeforeSetValidator(validator);
 
-		IObservableValue modelCoreNameValue = Observables.observeMapEntry(attributesMap, coreNameText);
+		IObservableValue<Object> modelCoreNameValue = Observables.observeMapEntry(attributesMap, coreNameText);
 
 		Binding bindValue = dctx.bindValue(coreNameTextValue, modelCoreNameValue, strategy, null);
 
