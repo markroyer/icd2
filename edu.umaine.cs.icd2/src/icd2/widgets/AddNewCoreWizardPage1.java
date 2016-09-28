@@ -3,13 +3,6 @@
  */
 package icd2.widgets;
 
-import icd2.FileFormatException;
-import icd2.model.DatingProject;
-import icd2.model.ModelObject;
-import icd2.model.Sample;
-import icd2.model.Workspace;
-import icd2.model.DateSession.PlotMethod;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -46,6 +39,13 @@ import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
+
+import icd2.FileFormatException;
+import icd2.model.DateSession.PlotMethod;
+import icd2.model.DatingProject;
+import icd2.model.ModelObject;
+import icd2.model.Sample;
+import icd2.model.Workspace;
 
 /**
  * @author Mark Royer
@@ -150,9 +150,8 @@ public class AddNewCoreWizardPage1 extends WizardPage {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets
-	 * .Composite)
+	 * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.
+	 * widgets .Composite)
 	 */
 	@Override
 	public void createControl(Composite parent) {
@@ -171,12 +170,12 @@ public class AddNewCoreWizardPage1 extends WizardPage {
 		topDateLabel.setText("Top Date:");
 
 		topDateSpinner = new Spinner(container, SWT.NONE);
-		topDateSpinner.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
-				true));
+		topDateSpinner
+				.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
 		newProjectButton = new Button(container, SWT.CHECK);
-		newProjectButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
-				false, 2, 1));
+		newProjectButton.setLayoutData(
+				new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
 		newProjectButton
 				.setText("Create a new project with selected core data?");
 		newProjectButton.addSelectionListener(new SelectionAdapter() {
@@ -209,10 +208,10 @@ public class AddNewCoreWizardPage1 extends WizardPage {
 		tableLabel.setText("Select values to plot:");
 		tableLabel.setEnabled(isNewProject);
 
-		coreTable = new Table(container, SWT.CHECK | SWT.BORDER | SWT.V_SCROLL
-				| SWT.H_SCROLL);
-		coreTable.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false,
-				2, 1));
+		coreTable = new Table(container,
+				SWT.CHECK | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
+		coreTable.setLayoutData(
+				new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
 
 		for (Sample s : allSamples) {
 			// Top and bottom have already been identified
@@ -244,8 +243,8 @@ public class AddNewCoreWizardPage1 extends WizardPage {
 		projectNameLabel.setEnabled(isNewProject);
 
 		projectNameText = new Text(container, SWT.SINGLE);
-		projectNameText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
-				true));
+		projectNameText
+				.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		projectNameText.setEnabled(isNewProject);
 
 		plotTypeLabel = new Label(container, SWT.NONE);
@@ -253,8 +252,8 @@ public class AddNewCoreWizardPage1 extends WizardPage {
 		plotTypeLabel.setEnabled(false);
 
 		plottingPostionCombo = new ComboViewer(container, SWT.READ_ONLY);
-		plottingPostionCombo.setContentProvider(ArrayContentProvider
-				.getInstance());
+		plottingPostionCombo
+				.setContentProvider(ArrayContentProvider.getInstance());
 		plottingPostionCombo.setInput(PlotMethod.values());
 		plottingPostionCombo.getCombo().setEnabled(false);
 
@@ -267,7 +266,8 @@ public class AddNewCoreWizardPage1 extends WizardPage {
 		int curYear = Calendar.getInstance().get(Calendar.YEAR);
 		topDateSpinner.setValues(curYear, 1900, curYear, 0, 1, 10);
 		projectNameText.setText(coreData.getCoreName());
-		plottingPostionCombo.setSelection(new StructuredSelection(PlotMethod.MIDPOINT));
+		plottingPostionCombo
+				.setSelection(new StructuredSelection(PlotMethod.MIDPOINT));
 	}
 
 	private List<Sample> getTopAndBottom(List<Sample> samples)
@@ -284,7 +284,7 @@ public class AddNewCoreWizardPage1 extends WizardPage {
 			throw new FileFormatException(
 					"Unclear what top and bottom are. Found %d matching types.  "
 							+ "Clearly indicate top and bottom columns.",
-							topAndBottom.size());
+					topAndBottom.size());
 		}
 
 		return topAndBottom;
@@ -297,14 +297,17 @@ public class AddNewCoreWizardPage1 extends WizardPage {
 		IEclipseContext wctx = E4Workbench.getServiceContext();
 		Workspace w = wctx.get(Workspace.class);
 
-		bindAndValidateCoreText(coreNameText, "coreName", w.getCoreData()
-				.children(), "A core with this name already exists.");
+		bindAndValidateCoreText(coreNameText, "coreName",
+				w.getCoreData().children(),
+				"A core with this name already exists.");
 
 		// BEGIN DATA BINDING FOR coreNameText ********************************
-		IObservableValue topDateSpinnerValue = WidgetProperties.selection()
-				.observe(topDateSpinner);
-		IObservableValue modelTopDateValue = PojoProperties.value("topYear",
-				CoreData.class).observe(coreData);
+		@SuppressWarnings("unchecked")
+		IObservableValue<Object> topDateSpinnerValue = (IObservableValue<Object>) WidgetProperties
+				.selection().observe(topDateSpinner);
+		@SuppressWarnings("unchecked")
+		IObservableValue<Object> modelTopDateValue = (IObservableValue<Object>) PojoProperties
+				.value("topYear", CoreData.class).observe(coreData);
 
 		dctx.bindValue(topDateSpinnerValue, modelTopDateValue);
 		// END DATA BINDING FOR coreNameText **********************************
@@ -318,10 +321,12 @@ public class AddNewCoreWizardPage1 extends WizardPage {
 		enableValidateBindings.add(projectNameBinding);
 
 		// BEGIN DATA BINDING FOR plottingCombo *******************************
-		IObservableValue plottingComboValue = ViewerProperties
+		@SuppressWarnings("unchecked")
+		IObservableValue<Object> plottingComboValue = (IObservableValue<Object>) ViewerProperties
 				.singleSelection().observe(plottingPostionCombo);
-		IObservableValue modelPlottingPositionValue = PojoProperties.value(
-				"plottingPosition", CoreData.class).observe(coreData);
+		@SuppressWarnings("unchecked")
+		IObservableValue<Object> modelPlottingPositionValue = (IObservableValue<Object>) PojoProperties
+				.value("plottingPosition", CoreData.class).observe(coreData);
 
 		dctx.bindValue(plottingComboValue, modelPlottingPositionValue);
 		// END DATA BINDING FOR plottingCombo *********************************
@@ -333,8 +338,9 @@ public class AddNewCoreWizardPage1 extends WizardPage {
 	private Binding bindAndValidateCoreText(Text coreNameText, String property,
 			final ModelObject<?, ?>[] namedObjects, final String errorMessage) {
 
-		IObservableValue coreNameTextValue = WidgetProperties.text(SWT.Modify)
-				.observe(coreNameText);
+		@SuppressWarnings("unchecked")
+		IObservableValue<Object> coreNameTextValue = (IObservableValue<Object>) WidgetProperties
+				.text(SWT.Modify).observe(coreNameText);
 
 		IValidator validator = new IValidator() {
 			@Override
@@ -351,8 +357,9 @@ public class AddNewCoreWizardPage1 extends WizardPage {
 		UpdateValueStrategy strategy = new UpdateValueStrategy();
 		strategy.setBeforeSetValidator(validator);
 
-		IObservableValue modelCoreNameValue = PojoProperties.value(property,
-				CoreData.class).observe(coreData);
+		@SuppressWarnings("unchecked")
+		IObservableValue<Object> modelCoreNameValue = (IObservableValue<Object>) PojoProperties
+				.value(property, CoreData.class).observe(coreData);
 
 		Binding bindValue = dctx.bindValue(coreNameTextValue,
 				modelCoreNameValue, strategy, null);
