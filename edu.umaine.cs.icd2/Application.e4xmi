@@ -43,7 +43,7 @@
       <children xsi:type="menu:Menu" xmi:id="_jM9O_DRyEeSQreHnSbWKdg" elementId="edu.umaine.cs.icd2.menu.project" label="File">
         <children xsi:type="menu:HandledMenuItem" xmi:id="_jM9O_TRyEeSQreHnSbWKdg" label="Add Core" iconURI="platform:/plugin/edu.umaine.cs.icd2/icons/faenza/gtk-open24x24.png" command="_jM9O8jRyEeSQreHnSbWKdg"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_jM9O_jRyEeSQreHnSbWKdg" label="Save" iconURI="platform:/plugin/edu.umaine.cs.icd2/icons/faenza/gtk-save24x24.png" command="_jM9O9TRyEeSQreHnSbWKdg"/>
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_Q7oDcIXzEeaOJqLzmyb2JQ" elementId="edu.umaine.cs.icd2.handledmenuitem.export" label="Export" tooltip="Export data to a file" command="_7MpOgIXyEeaOJqLzmyb2JQ"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_Q7oDcIXzEeaOJqLzmyb2JQ" elementId="edu.umaine.cs.icd2.handledmenuitem.export" label="Export" tooltip="" command="_7MpOgIXyEeaOJqLzmyb2JQ"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_jM9O_zRyEeSQreHnSbWKdg" label="Quit" command="_jM8n7DRyEeSQreHnSbWKdg"/>
       </children>
       <children xsi:type="menu:Menu" xmi:id="_ydiO0DqNEeS44YPCkr4EFA" elementId="icd2.menu.project" label="Project">
@@ -102,10 +102,12 @@
       <tags>type:user</tags>
     </bindings>
     <bindings xmi:id="_LjZHsD_DEeWtGsa1xp-8ow" elementId="edu.umaine.cs.icd2.keybinding.redo" keySequence="M1+Y" command="_i79bgD_BEeWtGsa1xp-8ow"/>
+    <bindings xmi:id="_uZlSEIX6EeaC9sjVBt077w" elementId="edu.umaine.cs.icd2.keybinding.export" keySequence="M1+E" command="_7MpOgIXyEeaOJqLzmyb2JQ">
+      <tags>type:user</tags>
+    </bindings>
     <bindings xmi:id="_YwXc0EEXEeWtGsa1xp-8ow" elementId="edu.umaine.cs.icd2.keybinding.delete" keySequence="DEL" command="_AelGAEDtEeWtGsa1xp-8ow">
       <tags>type:user</tags>
     </bindings>
-    <bindings xmi:id="_e6kOEIX0EeaOJqLzmyb2JQ" elementId="edu.umaine.cs.icd2.keybinding.export" keySequence="M1+E" command="_7MpOgIXyEeaOJqLzmyb2JQ"/>
   </bindingTables>
   <rootContext xmi:id="_jM8n6TRyEeSQreHnSbWKdg" elementId="org.eclipse.ui.contexts.dialogAndWindow" name="In Dialog and Windows">
     <children xmi:id="_jM8n6jRyEeSQreHnSbWKdg" elementId="org.eclipse.ui.contexts.window" name="In Windows"/>
