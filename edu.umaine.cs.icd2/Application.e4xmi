@@ -43,6 +43,7 @@
       <children xsi:type="menu:Menu" xmi:id="_jM9O_DRyEeSQreHnSbWKdg" elementId="edu.umaine.cs.icd2.menu.project" label="File">
         <children xsi:type="menu:HandledMenuItem" xmi:id="_jM9O_TRyEeSQreHnSbWKdg" label="Add Core" iconURI="platform:/plugin/edu.umaine.cs.icd2/icons/faenza/gtk-open24x24.png" command="_jM9O8jRyEeSQreHnSbWKdg"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_jM9O_jRyEeSQreHnSbWKdg" label="Save" iconURI="platform:/plugin/edu.umaine.cs.icd2/icons/faenza/gtk-save24x24.png" command="_jM9O9TRyEeSQreHnSbWKdg"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_Q7oDcIXzEeaOJqLzmyb2JQ" elementId="edu.umaine.cs.icd2.handledmenuitem.export" label="Export" tooltip="Export data to a file" command="_7MpOgIXyEeaOJqLzmyb2JQ"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_jM9O_zRyEeSQreHnSbWKdg" label="Quit" command="_jM8n7DRyEeSQreHnSbWKdg"/>
       </children>
       <children xsi:type="menu:Menu" xmi:id="_ydiO0DqNEeS44YPCkr4EFA" elementId="icd2.menu.project" label="Project">
@@ -80,6 +81,7 @@
   <handlers xmi:id="_F5qn4O8DEeWanehvTl9f5w" elementId="edu.umaine.cs.icd2.handler.removeCore" contributionURI="bundleclass://edu.umaine.cs.icd2/icd2.handlers.RemoveCoreHandler" command="_Fj0-8O78EeWanehvTl9f5w"/>
   <handlers xmi:id="_bYJrUGrZEeap1IV73wO7HQ" elementId="edu.umaine.cs.icd2.handler.removeDepthMarker" contributionURI="bundleclass://edu.umaine.cs.icd2/icd2.handlers.RemoveDepthMarkerHandler" command="_r9a0cGrZEeap1IV73wO7HQ"/>
   <handlers xmi:id="_2tWbMHEWEeaopoJjg2EE8w" elementId="edu.umaine.cs.icd2.handler.addDepthMarker" contributionURI="bundleclass://edu.umaine.cs.icd2/icd2.handlers.AddDepthMarkerHandler" command="__nIfUHEWEeaopoJjg2EE8w"/>
+  <handlers xmi:id="_CRjbsIXzEeaOJqLzmyb2JQ" elementId="edu.umaine.cs.icd2.handler.export" contributionURI="bundleclass://edu.umaine.cs.icd2/icd2.handlers.ExportHandler" command="_7MpOgIXyEeaOJqLzmyb2JQ"/>
   <bindingTables xmi:id="_jM9O8DRyEeSQreHnSbWKdg" bindingContext="_jM8n6TRyEeSQreHnSbWKdg">
     <bindings xmi:id="_jM9O8TRyEeSQreHnSbWKdg" elementId="edu.umaine.cs.icd2.keybinding.quit" keySequence="M1+Q" command="_jM8n7DRyEeSQreHnSbWKdg">
       <tags>type:user</tags>
@@ -103,6 +105,7 @@
     <bindings xmi:id="_YwXc0EEXEeWtGsa1xp-8ow" elementId="edu.umaine.cs.icd2.keybinding.delete" keySequence="DEL" command="_AelGAEDtEeWtGsa1xp-8ow">
       <tags>type:user</tags>
     </bindings>
+    <bindings xmi:id="_e6kOEIX0EeaOJqLzmyb2JQ" elementId="edu.umaine.cs.icd2.keybinding.export" keySequence="M1+E" command="_7MpOgIXyEeaOJqLzmyb2JQ"/>
   </bindingTables>
   <rootContext xmi:id="_jM8n6TRyEeSQreHnSbWKdg" elementId="org.eclipse.ui.contexts.dialogAndWindow" name="In Dialog and Windows">
     <children xmi:id="_jM8n6jRyEeSQreHnSbWKdg" elementId="org.eclipse.ui.contexts.window" name="In Windows"/>
@@ -128,6 +131,7 @@
   <commands xmi:id="_Fj0-8O78EeWanehvTl9f5w" elementId="edu.umaine.cs.icd2.command.removeCore" commandName="Remove Core" description="Remove the core from the workspace"/>
   <commands xmi:id="_r9a0cGrZEeap1IV73wO7HQ" elementId="edu.umaine.cs.icd2.command.removeDepthMarker" commandName="Remove Depth Marker" description="Remove the depth marker from the current session"/>
   <commands xmi:id="__nIfUHEWEeaopoJjg2EE8w" elementId="edu.umaine.cs.icd2.command.addDepthMarker" commandName="Add Depth Marker" description="Add a depth marker to the current session"/>
+  <commands xmi:id="_7MpOgIXyEeaOJqLzmyb2JQ" elementId="edu.umaine.cs.icd2.command.export" commandName="Export" description="Export data to a file"/>
   <addons xmi:id="_HUPIIEUnEeSlZI62B5TpCw" elementId="icd2.addon.0" contributionURI="bundleclass://edu.umaine.cs.icd2/icd2.addon.CreateNewProject"/>
   <addons xmi:id="_UyZcwNocEeSP_dvThRp0FA" elementId="icd2.addon.PartsUtil" contributionURI="bundleclass://edu.umaine.cs.icd2/icd2.parts.PartsUtil"/>
   <addons xmi:id="_jM8n4jRyEeSQreHnSbWKdg" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
