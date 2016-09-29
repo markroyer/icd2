@@ -18,9 +18,17 @@ public class ExportHandler {
 		
 		FileDialog saveDialog = new FileDialog(shell, SWT.SAVE);
 		
+		saveDialog.setText("Export Data");
+		
+		saveDialog.setFilterExtensions(new String[]{"*.csv","*.h5","*.xls"});
+		
+		saveDialog.setOverwrite(true); // prompt, yes!
+				
+		saveDialog.setFilterIndex(0); // csv files
+		
 		String filePath = saveDialog.open();
 	
-		logger.debug(String.format("Exporting to file {}", filePath));
+		logger.info("Exported file {}.", filePath);
 	}
 		
 }
