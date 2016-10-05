@@ -25,6 +25,9 @@
                   <children xsi:type="menu:HandledMenuItem" xmi:id="_4Y9L8HEXEeaopoJjg2EE8w" elementId="edu.umaine.cs.icd2.handledmenuitem.addDepthMarker" label="Add Depth Marker" tooltip="Add a marker to the current date session" command="__nIfUHEWEeaopoJjg2EE8w">
                     <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_HjYuwHEYEeaopoJjg2EE8w" coreExpressionId="edu.umaine.cs.icd2.DateSession.selectionSet"/>
                   </children>
+                  <children xsi:type="menu:HandledMenuItem" xmi:id="_vDaXMIqlEeaPCbKPf2l1ZA" elementId="edu.umaine.cs.icd2.handledmenuitem.export" label="Export" tooltip="Export project data" command="_7MpOgIXyEeaOJqLzmyb2JQ">
+                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_0WPiwIqlEeaPCbKPf2l1ZA" coreExpressionId="edu.umaine.cs.icd2.DateSession.OR.DatingProject.selectionSet"/>
+                  </children>
                 </menus>
               </children>
             </children>
