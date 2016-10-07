@@ -23,6 +23,7 @@ import javax.inject.Inject;
 import javax.xml.bind.ValidationException;
 
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.core.di.extensions.Preference;
 import org.eclipse.e4.core.services.events.IEventBroker;
@@ -40,8 +41,9 @@ import org.slf4j.LoggerFactory;
  *
  */
 public class AddNewCoreHandler {
-	
-	private static final Logger logger = LoggerFactory.getLogger(AddNewCoreHandler.class);
+
+	private static final Logger logger = LoggerFactory
+			.getLogger(AddNewCoreHandler.class);
 
 	@Inject
 	@Preference(value = LAST_DIR_PATH)
@@ -49,13 +51,14 @@ public class AddNewCoreHandler {
 
 	@Execute
 	public void execute(Shell shell, IEventBroker eventBroker,
-			@Preference IEclipsePreferences prefs, Workspace workspace) {
+			@Preference IEclipsePreferences prefs, Workspace workspace,
+			IEclipseContext wctx) {
 
 		boolean done = false;
 		while (!done) {
 
 			try {
-				attemptToAddNewCore(shell, eventBroker, prefs, workspace);
+				attemptToAddNewCore(shell, eventBroker, prefs, workspace, wctx);
 				done = true;
 			} catch (FileFormatException e) {
 				MessageDialog dialog = new MessageDialog(shell, "File Error",
@@ -70,8 +73,8 @@ public class AddNewCoreHandler {
 	}
 
 	private void attemptToAddNewCore(Shell shell, IEventBroker eventBroker,
-			IEclipsePreferences prefs, Workspace workspace)
-			throws FileFormatException {
+			IEclipsePreferences prefs, Workspace workspace,
+			IEclipseContext wctx) throws FileFormatException {
 		FileDialog dialog = new FileDialog(shell, SWT.OPEN);
 
 		if (lastPath != null)
@@ -97,13 +100,15 @@ public class AddNewCoreHandler {
 				if (coreName.contains("."))
 					coreName = coreName.substring(0, coreName.lastIndexOf('.'));
 
-				AddNewCoreWizard wiz = new AddNewCoreWizard(coreName, samples);
+				AddNewCoreWizard wiz = new AddNewCoreWizard(coreName, samples,
+						wctx);
 				WizardDialog wDialog = new WizardDialog(shell, wiz);
 
 				if (wDialog.open() == WizardDialog.OK) {
 
-					Core newCore = new Core(workspace.getCoreData()
-							.createCoreFile(wiz.getCoreName()),
+					Core newCore = new Core(
+							workspace.getCoreData()
+									.createCoreFile(wiz.getCoreName()),
 							wiz.getCoreName(), wiz.getTopYear(), samples);
 
 					Validate.validate(newCore);
@@ -121,9 +126,8 @@ public class AddNewCoreHandler {
 								CoreModelConstants.CREATE_NEW_DATING_PROJECT,
 								new NewProjectObject(wiz.getProjectName(),
 										toKeys(wiz.getSamplesToPlot()),
-										toKeys(wiz.getTopAndBottom()), wiz
-												.getPlotMethod(), wiz
-												.getTopYear()));
+										toKeys(wiz.getTopAndBottom()),
+										wiz.getPlotMethod(), wiz.getTopYear()));
 					}
 
 				}
@@ -138,8 +142,8 @@ public class AddNewCoreHandler {
 		List<ModelKey<String>> sampleKeys = new ArrayList<>();
 
 		for (Sample s : samples) {
-			sampleKeys.add(new ModelKey<String>(s.getParent().getName() + "/"
-					+ s.getName()));
+			sampleKeys.add(new ModelKey<String>(
+					s.getParent().getName() + "/" + s.getName()));
 		}
 
 		return sampleKeys;
@@ -159,8 +163,8 @@ public class AddNewCoreHandler {
 
 		public NewProjectObject(String projectName) {
 			this(projectName, new ArrayList<ModelKey<String>>(),
-					new ArrayList<ModelKey<String>>(), MIDPOINT, Calendar
-							.getInstance().get(Calendar.YEAR));
+					new ArrayList<ModelKey<String>>(), MIDPOINT,
+					Calendar.getInstance().get(Calendar.YEAR));
 		}
 
 		public NewProjectObject(String projectName,

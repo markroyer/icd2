@@ -16,7 +16,6 @@ import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.e4.core.contexts.IEclipseContext;
-import org.eclipse.e4.ui.internal.workbench.E4Workbench;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ViewerProperties;
@@ -131,10 +130,13 @@ public class AddNewCoreWizardPage1 extends WizardPage {
 	};
 
 	private CoreData coreData;
+	
+	private IEclipseContext wctx;
 
-	public AddNewCoreWizardPage1(String initCoreName, List<Sample> allSamples)
+	public AddNewCoreWizardPage1(String initCoreName, List<Sample> allSamples, IEclipseContext wctx)
 			throws FileFormatException {
 		super("page1");
+		this.wctx = wctx;
 		coreData = new CoreData();
 		coreData.coreName = initCoreName;
 		this.allSamples = allSamples;
@@ -294,7 +296,6 @@ public class AddNewCoreWizardPage1 extends WizardPage {
 		// The DataBindingContext object will manage the data bindings.
 		dctx = new DataBindingContext();
 
-		IEclipseContext wctx = E4Workbench.getServiceContext();
 		Workspace w = wctx.get(Workspace.class);
 
 		bindAndValidateCoreText(coreNameText, "coreName",

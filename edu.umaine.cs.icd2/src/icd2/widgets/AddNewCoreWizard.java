@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.wizard.Wizard;
 
 /**
@@ -22,9 +23,9 @@ public class AddNewCoreWizard extends Wizard {
 	private AddNewCoreWizardPage1 page1;
 
 	@Inject
-	public AddNewCoreWizard(String initCoreName, List<Sample> allSamples)
-			throws FileFormatException {
-		page1 = new AddNewCoreWizardPage1(initCoreName, allSamples);
+	public AddNewCoreWizard(String initCoreName, List<Sample> allSamples,
+			IEclipseContext wctx) throws FileFormatException {
+		page1 = new AddNewCoreWizardPage1(initCoreName, allSamples, wctx);
 	}
 
 	/*
