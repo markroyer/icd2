@@ -20,6 +20,30 @@ public class ExportHandler {
 	private static final Logger logger = LoggerFactory
 			.getLogger(ExportHandler.class);
 
+	private static FileDialog saveDialog;
+
+	private static FileDialog createDiaolog(Shell shell) {
+
+		FileDialog resultDialog = new FileDialog(shell, SWT.SAVE);
+
+		resultDialog.setText("Export Data");
+
+		resultDialog.setFilterNames(new String[] {
+				"Comma Separated Values Files (*.csv)", 
+				"Heirarchical Data Format (*.h5;*.hdf)",
+				"Microsoft Excel Spreadsheet Files (*.xls)", "All Files (*.*)" });
+
+		resultDialog
+				.setFilterExtensions(new String[] { "*.csv", "*.h5;*.hdf", "*.xls","*.*" });
+
+		resultDialog.setOverwrite(true); // prompt, yes!
+
+		resultDialog.setFilterIndex(0); // csv files
+
+		return resultDialog;
+
+	}
+
 	@Execute
 	public void execute(Shell shell,
 			@Named(CoreModelConstants.TREE_ITEM_SELECTION) @Optional DateSession ds,
@@ -28,19 +52,12 @@ public class ExportHandler {
 		// If a project is selected default to the active session
 		if (dp != null)
 			ds = dp.getChart().getActiveDateSession();
-		
+
+		if (saveDialog == null) {
+			saveDialog = createDiaolog(shell);
+		}
+
 		logger.debug("Received {} date session and {} date project", ds, dp);
-		
-		FileDialog saveDialog = new FileDialog(shell, SWT.SAVE);
-
-		saveDialog.setText("Export Data");
-
-		saveDialog
-				.setFilterExtensions(new String[] { "*.csv", "*.h5", "*.xls" });
-
-		saveDialog.setOverwrite(true); // prompt, yes!
-
-		saveDialog.setFilterIndex(0); // csv files
 
 		String filePath = saveDialog.open();
 
