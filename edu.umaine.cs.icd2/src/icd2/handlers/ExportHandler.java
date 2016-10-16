@@ -1,6 +1,9 @@
 
 package icd2.handlers;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.Arrays;
 
 import javax.inject.Named;
@@ -17,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import icd2.model.CoreModelConstants;
 import icd2.model.DateSession;
 import icd2.model.DatingProject;
+import icd2.model.Plot;
 
 public class ExportHandler {
 
@@ -93,7 +97,37 @@ public class ExportHandler {
 			fileExt = getExtension(filePath);
 		}
 
+		try {
+			writeCSVFile(new File(filePath), ds);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		logger.info("Exported file {}.", filePath);
+	}
+
+	public void writeCSVFile(File file, DateSession dateSession)
+			throws FileNotFoundException {
+
+		PrintWriter out = new PrintWriter(file);
+
+		out.println(dateSession.getYear(0));
+		Plot plot = dateSession.getParent().getChart().getPlots()[0][0];
+		out.println(plot.getPlotMethod());
+		out.println(plot.getRangeValues().stream()
+				.map(e -> e.getName().split("/")[1])
+				.reduce((e1, e2) -> e1 + ", " + e2).get());
+		double[] depthArray = dateSession.getDepthArray();
+		double[] yearArray = dateSession.getYearArray();
+		out.println(depthArray.length);
+		out.println("Depth, Year");
+		for (int i = 0; i < yearArray.length; i++) {
+			out.printf("%f,%.0f\n", depthArray[i], yearArray[i]);
+		}
+
+		out.flush();
+		out.close();
 	}
 
 }
