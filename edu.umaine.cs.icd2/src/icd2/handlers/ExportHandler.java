@@ -55,10 +55,14 @@ public class ExportHandler {
 
 	}
 
+	/**
+	 * @param filePath
+	 *            Fully qualified path to file (Not null)
+	 * @return The extension (eg, .csv)
+	 */
 	protected String getExtension(String filePath) {
-		return filePath == null ? null
-				: filePath.lastIndexOf(".") < 0 ? ""
-						: filePath.substring(filePath.lastIndexOf("."));
+		return filePath.lastIndexOf(".") < 0 ? ""
+				: filePath.substring(filePath.lastIndexOf("."));
 	}
 
 	protected boolean isRecognizedFile(String fileExt) {
@@ -81,7 +85,7 @@ public class ExportHandler {
 		logger.debug("Received {} date session and {} date project", ds, dp);
 
 		String filePath = saveDialog.open();
-		String fileExt = getExtension(filePath);
+		String fileExt = filePath == null ? null : getExtension(filePath);
 
 		while (fileExt != null && !isRecognizedFile(fileExt)) {
 			MessageBox unknownDialog = new MessageBox(shell,
@@ -98,7 +102,8 @@ public class ExportHandler {
 		}
 
 		try {
-			writeCSVFile(new File(filePath), ds);
+			if (".csv".equals(fileExt))
+				writeCSVFile(new File(filePath), ds);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
