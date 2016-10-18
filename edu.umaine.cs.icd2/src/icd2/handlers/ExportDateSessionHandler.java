@@ -39,11 +39,11 @@ public class ExportDateSessionHandler {
 	public void execute(Shell shell,
 			@Named(CoreModelConstants.TREE_ITEM_SELECTION) @Optional DateSession ds) {
 
-		FileDialog saveDialog = FileDialogExport.getFileDialogExport(shell);
+		FileDialog exportDialog = FileDialogExport.getFileDialogExport(shell);
 
 		logger.debug("Received {} date session.", ds);
 
-		String filePath = saveDialog.open();
+		String filePath = exportDialog.open();
 		String fileExt = getExtension(filePath);
 
 		while (fileExt != null && !isRecognizedFile(fileExt)) {
@@ -56,7 +56,7 @@ public class ExportDateSessionHandler {
 									+ "Please enter a valid extension.",
 							fileExt));
 			unknownDialog.open();
-			filePath = saveDialog.open();
+			filePath = exportDialog.open();
 			fileExt = getExtension(filePath);
 		}
 
