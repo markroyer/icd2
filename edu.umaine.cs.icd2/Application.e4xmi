@@ -25,7 +25,10 @@
                   <children xsi:type="menu:HandledMenuItem" xmi:id="_4Y9L8HEXEeaopoJjg2EE8w" elementId="edu.umaine.cs.icd2.handledmenuitem.addDepthMarker" label="Add Depth Marker" tooltip="Add a marker to the current date session" command="__nIfUHEWEeaopoJjg2EE8w">
                     <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_HjYuwHEYEeaopoJjg2EE8w" coreExpressionId="edu.umaine.cs.icd2.DateSession.selectionSet"/>
                   </children>
-                  <children xsi:type="menu:HandledMenuItem" xmi:id="_vDaXMIqlEeaPCbKPf2l1ZA" elementId="edu.umaine.cs.icd2.handledmenuitem.exportDateSession" label="Export Date Session" tooltip="Export date session" command="_7MpOgIXyEeaOJqLzmyb2JQ">
+                  <children xsi:type="menu:HandledMenuItem" xmi:id="_Am8hsJViEeawwado86UfQg" elementId="edu.umaine.cs.icd2.handledmenuitem.exportsessiondata" label="Export Session Data" tooltip="Export all resampled session data for core" command="_dr57IJVhEeawwado86UfQg">
+                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_FRp9UJViEeawwado86UfQg" coreExpressionId="edu.umaine.cs.icd2.DateSession.selectionSet"/>
+                  </children>
+                  <children xsi:type="menu:HandledMenuItem" xmi:id="_vDaXMIqlEeaPCbKPf2l1ZA" elementId="edu.umaine.cs.icd2.handledmenuitem.exportDateSession" label="Export Date Session" tooltip="Export only date session depth and year" command="_7MpOgIXyEeaOJqLzmyb2JQ">
                     <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_0WPiwIqlEeaPCbKPf2l1ZA" coreExpressionId="edu.umaine.cs.icd2.DateSession.selectionSet"/>
                   </children>
                 </menus>

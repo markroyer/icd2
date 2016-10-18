@@ -7,13 +7,14 @@ import org.slf4j.LoggerFactory;
 
 public class ExportSessionDataHandler {
 
-	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory
 			.getLogger(ExportSessionDataHandler.class);
 
 	@Execute
 	public void execute() {
 
+		logger.info("Need to implement export session data.");
+		
 	}
 
 }
