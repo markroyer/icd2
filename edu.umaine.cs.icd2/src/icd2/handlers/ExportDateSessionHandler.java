@@ -1,6 +1,9 @@
 
 package icd2.handlers;
 
+import static icd2.widgets.FileDialogExport.getExtension;
+import static icd2.widgets.FileDialogExport.isRecognizedFile;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -25,67 +28,23 @@ import edu.umaine.cs.h5.octave.H5OctaveWriter;
 import icd2.model.CoreModelConstants;
 import icd2.model.DateSession;
 import icd2.model.Plot;
+import icd2.widgets.FileDialogExport;
 
 public class ExportDateSessionHandler {
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(ExportDateSessionHandler.class);
 
-	private static FileDialog saveDialog;
-
-	private static final String[] FILTER_NAMES = {
-			"Comma Separated Values Files (*.csv)",
-			"Heirarchical Data Format (*.h5;*.hdf)",
-			"Microsoft Excel Spreadsheet Files (*.xls)", "All Files (*.*)" };
-
-	private static final String[] FILTER_EXTS = { "*.csv", "*.h5;*.hdf",
-			"*.xls", "*.*" };
-
-	private static FileDialog createDiaolog(Shell shell) {
-
-		FileDialog resultDialog = new FileDialog(shell, SWT.SAVE);
-
-		resultDialog.setText("Export Data");
-
-		resultDialog.setFilterNames(FILTER_NAMES);
-
-		resultDialog.setFilterExtensions(FILTER_EXTS);
-
-		resultDialog.setOverwrite(true); // prompt, yes!
-
-		resultDialog.setFilterIndex(0); // csv files
-
-		return resultDialog;
-
-	}
-
-	/**
-	 * @param filePath
-	 *            Fully qualified path to file (Not null)
-	 * @return The extension (eg, .csv)
-	 */
-	protected String getExtension(String filePath) {
-		return filePath.lastIndexOf(".") < 0 ? ""
-				: filePath.substring(filePath.lastIndexOf("."));
-	}
-
-	protected boolean isRecognizedFile(String fileExt) {
-		return Arrays.stream(FILTER_EXTS).anyMatch(e -> e.contains(fileExt));
-	}
-
 	@Execute
 	public void execute(Shell shell,
 			@Named(CoreModelConstants.TREE_ITEM_SELECTION) @Optional DateSession ds) {
 
-		// Reuse dialog so we have the old directory info
-		if (saveDialog == null) {
-			saveDialog = createDiaolog(shell);
-		}
+		FileDialog saveDialog = FileDialogExport.getFileDialogExport(shell);
 
 		logger.debug("Received {} date session.", ds);
 
 		String filePath = saveDialog.open();
-		String fileExt = filePath == null ? null : getExtension(filePath);
+		String fileExt = getExtension(filePath);
 
 		while (fileExt != null && !isRecognizedFile(fileExt)) {
 			MessageBox unknownDialog = new MessageBox(shell,
