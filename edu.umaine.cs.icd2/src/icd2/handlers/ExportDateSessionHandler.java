@@ -19,13 +19,12 @@ import org.slf4j.LoggerFactory;
 
 import icd2.model.CoreModelConstants;
 import icd2.model.DateSession;
-import icd2.model.DatingProject;
 import icd2.model.Plot;
 
-public class ExportHandler {
+public class ExportDateSessionHandler {
 
 	private static final Logger logger = LoggerFactory
-			.getLogger(ExportHandler.class);
+			.getLogger(ExportDateSessionHandler.class);
 
 	private static FileDialog saveDialog;
 
@@ -71,18 +70,14 @@ public class ExportHandler {
 
 	@Execute
 	public void execute(Shell shell,
-			@Named(CoreModelConstants.TREE_ITEM_SELECTION) @Optional DateSession ds,
-			@Named(CoreModelConstants.TREE_ITEM_SELECTION) @Optional DatingProject dp) {
+			@Named(CoreModelConstants.TREE_ITEM_SELECTION) @Optional DateSession ds) {
 
-		// If a project is selected default to the active session
-		if (dp != null)
-			ds = dp.getChart().getActiveDateSession();
-
+		// Reuse dialog so we have the old directory info
 		if (saveDialog == null) {
 			saveDialog = createDiaolog(shell);
 		}
 
-		logger.debug("Received {} date session and {} date project", ds, dp);
+		logger.debug("Received {} date session.", ds);
 
 		String filePath = saveDialog.open();
 		String fileExt = filePath == null ? null : getExtension(filePath);

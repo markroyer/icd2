@@ -48,12 +48,9 @@
             	<instanceof value="icd2.model.DateSession"></instanceof>
          	</with>
         </definition>
-        <definition id="edu.umaine.cs.icd2.DateSession.OR.DatingProject.selectionSet">
+        <definition id="edu.umaine.cs.icd2.DatingProject.selectionSet">
         	<with variable="itemAtMouseClick">
-        		<or>
-        			<instanceof value="icd2.model.DateSession"></instanceof>
             		<instanceof value="icd2.model.DatingProject"></instanceof>
-        		</or>
          	</with>
         </definition>
    </extension>
