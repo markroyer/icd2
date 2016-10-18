@@ -84,6 +84,7 @@
   <handlers xmi:id="_bYJrUGrZEeap1IV73wO7HQ" elementId="edu.umaine.cs.icd2.handler.removeDepthMarker" contributionURI="bundleclass://edu.umaine.cs.icd2/icd2.handlers.RemoveDepthMarkerHandler" command="_r9a0cGrZEeap1IV73wO7HQ"/>
   <handlers xmi:id="_2tWbMHEWEeaopoJjg2EE8w" elementId="edu.umaine.cs.icd2.handler.addDepthMarker" contributionURI="bundleclass://edu.umaine.cs.icd2/icd2.handlers.AddDepthMarkerHandler" command="__nIfUHEWEeaopoJjg2EE8w"/>
   <handlers xmi:id="_CRjbsIXzEeaOJqLzmyb2JQ" elementId="edu.umaine.cs.icd2.handler.exportDateSession" contributionURI="bundleclass://edu.umaine.cs.icd2/icd2.handlers.ExportDateSessionHandler" command="_7MpOgIXyEeaOJqLzmyb2JQ"/>
+  <handlers xmi:id="_rZGq8JVhEeawwado86UfQg" elementId="edu.umaine.cs.icd2.handler.exportSessionDataHandler" contributionURI="bundleclass://edu.umaine.cs.icd2/icd2.handlers.ExportSessionDataHandler" command="_dr57IJVhEeawwado86UfQg"/>
   <bindingTables xmi:id="_jM9O8DRyEeSQreHnSbWKdg" bindingContext="_jM8n6TRyEeSQreHnSbWKdg">
     <bindings xmi:id="_jM9O8TRyEeSQreHnSbWKdg" elementId="edu.umaine.cs.icd2.keybinding.quit" keySequence="M1+Q" command="_jM8n7DRyEeSQreHnSbWKdg">
       <tags>type:user</tags>
