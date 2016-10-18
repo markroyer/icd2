@@ -4,7 +4,9 @@ package icd2.handlers;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.inject.Named;
 
@@ -17,6 +19,9 @@ import org.eclipse.swt.widgets.Shell;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import edu.umaine.cs.h5.H5ConnectorException;
+import edu.umaine.cs.h5.H5Writer;
+import edu.umaine.cs.h5.octave.H5OctaveWriter;
 import icd2.model.CoreModelConstants;
 import icd2.model.DateSession;
 import icd2.model.Plot;
@@ -97,9 +102,12 @@ public class ExportDateSessionHandler {
 		}
 
 		try {
-			if (".csv".equals(fileExt))
+			if (".csv".equalsIgnoreCase(fileExt))
 				writeCSVFile(new File(filePath), ds);
-		} catch (FileNotFoundException e) {
+			if (".h5".equalsIgnoreCase(fileExt)
+					|| ".hdf".equalsIgnoreCase(fileExt))
+				writeHDFFile(new File(filePath), ds);
+		} catch (FileNotFoundException | H5ConnectorException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -128,6 +136,34 @@ public class ExportDateSessionHandler {
 
 		out.flush();
 		out.close();
+	}
+
+	public void writeHDFFile(File file, DateSession dateSession)
+			throws H5ConnectorException {
+
+		Plot plot = dateSession.getParent().getChart().getPlots()[0][0];
+
+		List<String> labels = new ArrayList<>();
+		List<Object> objects = new ArrayList<>();
+
+		labels.add("topyear");
+		objects.add(dateSession.getYear(0));
+
+		labels.add("plotmethod");
+		objects.add(plot.getPlotMethod().toString());
+
+		labels.add("depth");
+		objects.add(dateSession.getDepthArray());
+
+		labels.add("year");
+		objects.add(Arrays.stream(dateSession.getYearArray())
+				.mapToInt(e -> (int) e).toArray());
+
+		H5Writer writer = new H5OctaveWriter();
+
+		writer.writeHDF5File(file.getAbsolutePath(),
+				labels.toArray(new String[labels.size()]), objects.toArray());
+
 	}
 
 }
