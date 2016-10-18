@@ -17,16 +17,34 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class FileDialogExport {
 
+	/**
+	 * Only one export dialog is used during the application life cycle so that
+	 * previous directory and file information is retained.
+	 */
 	private static FileDialog exportDialog;
 
+	/**
+	 * The detailed description of the types of files that can be exported.
+	 */
 	private static final String[] FILTER_NAMES = {
 			"Comma Separated Values Files (*.csv)",
 			"Heirarchical Data Format (*.h5;*.hdf)",
 			"Microsoft Excel Spreadsheet Files (*.xls)", "All Files (*.*)" };
 
+	/**
+	 * The file extensions of each type of file.
+	 */
 	private static final String[] FILTER_EXTS = { "*.csv", "*.h5;*.hdf",
 			"*.xls", "*.*" };
 
+	/**
+	 * Get an export {@link FileDialog} object. If one does not exist, create it
+	 * from the given shell.
+	 * 
+	 * @param shell
+	 *            (Not null)
+	 * @return A {@link FileDialog} instance (Never null)
+	 */
 	public static FileDialog getFileDialogExport(Shell shell) {
 
 		// Reuse dialog so we have the old directory info
@@ -36,6 +54,11 @@ public class FileDialogExport {
 		return exportDialog;
 	}
 
+	/**
+	 * @param shell
+	 *            (Not null)
+	 * @return A new export file dialog (Never null)
+	 */
 	private static FileDialog createDiaolog(Shell shell) {
 
 		FileDialog resultDialog = new FileDialog(shell, SWT.SAVE);
@@ -68,6 +91,12 @@ public class FileDialogExport {
 					: filePath.substring(filePath.lastIndexOf("."));
 	}
 
+	/**
+	 * @param fileExt
+	 *            A file extension may include the period. (Not null)
+	 * @return true IFF a known file extension pattern contains the given
+	 *         extension
+	 */
 	public static boolean isRecognizedFile(String fileExt) {
 		return Arrays.stream(FILTER_EXTS).anyMatch(e -> e.contains(fileExt));
 	}
