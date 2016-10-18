@@ -133,6 +133,7 @@
   <commands xmi:id="_r9a0cGrZEeap1IV73wO7HQ" elementId="edu.umaine.cs.icd2.command.removeDepthMarker" commandName="Remove Depth Marker" description="Remove the depth marker from the current session"/>
   <commands xmi:id="__nIfUHEWEeaopoJjg2EE8w" elementId="edu.umaine.cs.icd2.command.addDepthMarker" commandName="Add Depth Marker" description="Add a depth marker to the current session"/>
   <commands xmi:id="_7MpOgIXyEeaOJqLzmyb2JQ" elementId="edu.umaine.cs.icd2.command.exportDateSession" commandName="Export Date Session" description="Export date session to a file"/>
+  <commands xmi:id="_dr57IJVhEeawwado86UfQg" elementId="edu.umaine.cs.icd2.command.exportsessiondata" commandName="Export Session Data" description="Export resampled session data"/>
   <addons xmi:id="_HUPIIEUnEeSlZI62B5TpCw" elementId="icd2.addon.0" contributionURI="bundleclass://edu.umaine.cs.icd2/icd2.addon.CreateNewProject"/>
   <addons xmi:id="_UyZcwNocEeSP_dvThRp0FA" elementId="icd2.addon.PartsUtil" contributionURI="bundleclass://edu.umaine.cs.icd2/icd2.parts.PartsUtil"/>
   <addons xmi:id="_jM8n4jRyEeSQreHnSbWKdg" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
