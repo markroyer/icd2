@@ -3,9 +3,11 @@
  */
 package icd2.util;
 
+import icd2.model.Chart;
 import icd2.model.Core;
 import icd2.model.CoreData;
 import icd2.model.DatingProject;
+import icd2.model.Plot;
 import icd2.model.Sample;
 
 import java.net.URL;
@@ -38,6 +40,8 @@ public class IconUtils {
 		icons.put(DatingProject.class,
 				createImage("icons/faenza/folder16x16.png"));
 		icons.put(Sample.class, createImage("icons/faenza/folder_tar16x16.png"));
+		icons.put(Chart.class, createImage("icons/faenza/emblem-marketing16x16.png"));
+		icons.put(Plot.class, createImage("icons/faenza/emblem-marketing16x16.png"));
 	}
 
 	public static Image createImage(String path) {
