@@ -8,7 +8,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import javax.inject.Named;
 
@@ -24,6 +26,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import edu.umaine.cs.h5.H5ConnectorException;
+import edu.umaine.cs.h5.H5Writer;
+import edu.umaine.cs.h5.octave.H5OctaveWriter;
 import icd2.model.Core;
 import icd2.model.CoreData;
 import icd2.model.CoreModelConstants;
@@ -31,6 +35,7 @@ import icd2.model.DateSession;
 import icd2.model.ObjectNotFound;
 import icd2.model.Plot;
 import icd2.model.Sample;
+import icd2.model.Value;
 import icd2.util.DataFileException;
 import icd2.widgets.FileDialogExport;
 
@@ -159,32 +164,49 @@ public class ExportSessionDataHandler {
 	}
 
 	public void writeHDFFile(File file, DateSession dateSession)
-			throws H5ConnectorException {
+			throws H5ConnectorException, ObjectNotFound {
 
 		logger.debug("Need to implement export HDF File");
 
-		// Plot plot = dateSession.getParent().getChart().getPlots()[0][0];
-		//
-		// List<String> labels = new ArrayList<>();
-		// List<Object> objects = new ArrayList<>();
-		//
-		// labels.add("topyear");
-		// objects.add(dateSession.getYear(0));
-		//
-		// labels.add("plotmethod");
-		// objects.add(plot.getPlotMethod().toString());
-		//
-		// labels.add("depth");
-		// objects.add(dateSession.getDepthArray());
-		//
-		// labels.add("year");
-		// objects.add(Arrays.stream(dateSession.getYearArray())
-		// .mapToInt(e -> (int) e).toArray());
-		//
-		// H5Writer writer = new H5OctaveWriter();
-		//
-		// writer.writeHDF5File(file.getAbsolutePath(),
-		// labels.toArray(new String[labels.size()]), objects.toArray());
+		Plot plot = dateSession.getParent().getChart().getPlots()[0][0];
+
+		CoreData cd = dateSession.getParent().getParent().getCoreData();
+
+		Core core = cd
+				.lookupSample(plot.getDomainValues().get(0).getValuesKey())
+				.getParent();
+
+		List<Sample> samples = core.getSamples();
+
+		List<Double> resampleYear = interpolateYearData(dateSession,
+				plot.getXData());
+
+		List<String> labels = new ArrayList<>();
+		List<Object> objects = new ArrayList<>();
+
+		labels.add("year");
+		objects.add(resampleYear);
+
+		samples.stream().forEachOrdered(e -> labels.add(e.getName()));
+
+		samples.stream().forEachOrdered(e -> {
+			List<Double> newVals = new ArrayList<>(resampleYear.size());
+			List<Value> vals;
+			try {
+				vals = e.getValues();
+			} catch (DataFileException e1) {
+				e1.printStackTrace();
+				throw new RuntimeException("Unable to get values.");
+			}
+			IntStream.range(0, resampleYear.size()).forEachOrdered(
+					i -> newVals.add(vals.get(i).doubleValue()));
+			objects.add(newVals);
+		});
+
+		H5Writer writer = new H5OctaveWriter();
+
+		writer.writeHDF5File(file.getAbsolutePath(),
+				labels.toArray(new String[labels.size()]), objects.toArray());
 
 	}
 
