@@ -9,6 +9,7 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.operations.AbstractOperation;
 import org.eclipse.core.commands.operations.IOperationHistory;
 import org.eclipse.core.commands.operations.IUndoContext;
+import org.eclipse.core.commands.operations.ObjectUndoContext;
 import org.eclipse.core.commands.operations.OperationHistoryFactory;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -17,6 +18,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
+import org.eclipse.e4.ui.di.UISynchronize;
 import org.eclipse.swt.widgets.Shell;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import icd2.model.Chart;
 import icd2.model.CoreModelConstants;
 import icd2.model.DateSession;
+import icd2.model.DatingProject;
 import icd2.model.DateSession.DateSessionException;
 import icd2.model.DepthYear;
 import icd2.model.Workspace;
@@ -35,17 +38,28 @@ public class RemoveDepthMarkerHandler {
 
 	@Execute
 	public void execute(Shell shell, IEventBroker eventBroker,
-			Workspace workspace, IUndoContext ctx,
-			@Named(CoreModelConstants.TREE_ITEMS_SELECTED) @Optional List<DepthYear> markers) {
+			Workspace workspace,
+			@Named(CoreModelConstants.TREE_ITEMS_SELECTED) @Optional List<DepthYear> markers,
+			UISynchronize sync) {
 
-		markers.forEach(m -> removeDepthMarker(eventBroker, ctx,
-				m.getParent().getParent().getChart(), m, true));
+		Chart chart = null;
+		for (DepthYear m : markers) {
+			chart = m.getParent().getParent().getChart();
+			removeDepthMarker(eventBroker, chart, m, true);
+		}
 
+		if (chart != null) {
+			final DatingProject proj = chart.getParent();
+			// It appears async is required because of the dialog window
+			sync.asyncExec(() -> {
+				eventBroker.send(CoreModelConstants.DISPLAY_PROJECT_EVENT,
+						proj);
+			});
+		}
 	}
 
 	public static void removeDepthMarker(IEventBroker eventBroker,
-			IUndoContext ctx, Chart chartModel, final DepthYear marker,
-			boolean notify) {
+			Chart chartModel, final DepthYear marker, boolean notify) {
 
 		DateSession ds = chartModel.getActiveDateSession();
 
@@ -101,6 +115,7 @@ public class RemoveDepthMarkerHandler {
 
 				} catch (DateSessionException e) {
 					logger.debug("Unable to remove date session top year.", dy);
+					return Status.CANCEL_STATUS;
 				}
 
 				return Status.OK_STATUS;
@@ -114,7 +129,7 @@ public class RemoveDepthMarkerHandler {
 
 		};
 
-		ao.addContext(ctx);
+		ao.addContext(new ObjectUndoContext(chartModel.getParent()));
 
 		IOperationHistory operationHistory = OperationHistoryFactory
 				.getOperationHistory();
