@@ -1,17 +1,17 @@
  
 package icd2.handlers;
 
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.commands.operations.IOperationHistory;
+import org.eclipse.core.commands.operations.ObjectUndoContext;
+import org.eclipse.core.commands.operations.OperationHistoryFactory;
+import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.core.di.annotations.CanExecute;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.workbench.UIEvents;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.commands.operations.IOperationHistory;
-import org.eclipse.core.commands.operations.IUndoContext;
-import org.eclipse.core.commands.operations.OperationHistoryFactory;
-import org.eclipse.e4.core.contexts.IEclipseContext;
-import org.eclipse.e4.core.di.annotations.CanExecute;
 
 public class RedoHandler {
 	
@@ -20,7 +20,7 @@ public class RedoHandler {
 	@Execute
 	public void execute(IEclipseContext ectx, IEventBroker eventBroker) {
 
-		IUndoContext context = ectx.get(IUndoContext.class);
+		ObjectUndoContext context = ectx.get(ObjectUndoContext.class);
 		
 		IOperationHistory operationHistory = OperationHistoryFactory.getOperationHistory();
 
@@ -37,7 +37,7 @@ public class RedoHandler {
 	@CanExecute
 	public boolean canExecute(IEclipseContext ectx) {
 		
-		IUndoContext context = ectx.get(IUndoContext.class);
+		ObjectUndoContext context = ectx.get(ObjectUndoContext.class);
 
 		IOperationHistory operationHistory = OperationHistoryFactory.getOperationHistory();
 

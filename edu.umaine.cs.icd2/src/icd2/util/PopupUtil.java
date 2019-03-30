@@ -3,7 +3,7 @@
  */
 package icd2.util;
 
-import org.eclipse.core.commands.operations.IUndoContext;
+import org.eclipse.core.commands.operations.ObjectUndoContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.menu.MMenu;
@@ -44,8 +44,7 @@ public class PopupUtil {
 	 * @param menuId
 	 *            (Not null)
 	 */
-	public static void showMenu(MPart mPart, String menuId, Chart chartModel, IEventBroker eventBroker,
-			IUndoContext undoContext) {
+	public static void showMenu(MPart mPart, String menuId, Chart chartModel, IEventBroker eventBroker) {
 		MMenu selectedMenu = null;
 		for (MMenu menu : mPart.getMenus()) {
 			if (menuId.equals(menu.getElementId()))
@@ -58,7 +57,7 @@ public class PopupUtil {
 			final MMenu theMenu = selectedMenu;
 			Runnable r = new Runnable() {
 				public void run() {
-					showMenu(theMenu, chartModel, eventBroker, undoContext);
+					showMenu(theMenu, chartModel, eventBroker);
 				}
 			};
 			Display.getDefault().asyncExec(r);
@@ -68,8 +67,7 @@ public class PopupUtil {
 		}
 	}
 
-	private static void showMenu(MMenu selectedMenu, Chart parentPlot, IEventBroker eventBroker,
-			IUndoContext undoContext) {
+	private static void showMenu(MMenu selectedMenu, Chart parentPlot, IEventBroker eventBroker) {
 
 		final Display display = Display.getCurrent();
 
@@ -93,7 +91,7 @@ public class PopupUtil {
 			public void run() {
 				useForPopups.setActive();
 
-				final Menu menu = createMenu(parentPlot, useForPopups, eventBroker, undoContext);// create(selectedMenu,
+				final Menu menu = createMenu(parentPlot, useForPopups, eventBroker);// create(selectedMenu,
 				// useForPopups);
 				menu.addListener(SWT.Hide, new Listener() {
 					public void handleEvent(Event e) {
@@ -156,8 +154,7 @@ public class PopupUtil {
 
 	}
 
-	private static Menu createMenu(Chart chart, Control parentControl, IEventBroker eventBroker,
-			IUndoContext undoContext) {
+	private static Menu createMenu(Chart chart, Control parentControl, IEventBroker eventBroker) {
 
 		Menu menu = new Menu(parentControl);
 
@@ -173,7 +170,7 @@ public class PopupUtil {
 								@Override
 								public void widgetSelected(SelectionEvent e) {
 									new CropPlottedLinesHandler().execute(pv, ((MenuItem) e.getSource()).getSelection(),
-											eventBroker, undoContext);
+											eventBroker, new ObjectUndoContext(chart.getParent()));
 								}
 
 							});

@@ -66,7 +66,8 @@ public class PartsUtil {
 			if (mPart.getContext() != null) {
 
 				if (mPart.getContext().get(DatingProject.class).equals(project)) {
-					partService.bringToTop(mPart);
+//					partService.bringToTop(mPart);
+					partService.activate(mPart, true);
 					logger.info("Bringing MPart to the front {}", mPart);
 					return;
 				}

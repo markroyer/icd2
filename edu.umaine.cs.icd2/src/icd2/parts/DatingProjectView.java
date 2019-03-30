@@ -15,7 +15,7 @@ import javax.swing.SwingUtilities;
 
 import org.apache.commons.math3.analysis.interpolation.SplineInterpolator;
 import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
-import org.eclipse.core.commands.operations.IUndoContext;
+import org.eclipse.core.commands.operations.ObjectUndoContext;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
@@ -95,6 +95,8 @@ public class DatingProjectView implements ChartMouseListener {
 	@Inject
 	private MDirtyable dirty;
 
+	private ObjectUndoContext projectUndoContext;
+
 	@Inject
 	public DatingProjectView() {
 		yearMarkers = new ArrayList<>();
@@ -105,8 +107,7 @@ public class DatingProjectView implements ChartMouseListener {
 			@Optional DatingProject incomingProject, MPart mpart,
 			Workspace workspace, EMenuService menuService,
 			EModelService modelService, MApplication application,
-			IEventBroker eventBroker, IUndoContext undoContext)
-			throws ObjectNotFound {
+			IEventBroker eventBroker) throws ObjectNotFound {
 
 		if (incomingProject == null) {
 			incomingProject = WorkspaceUtil.getProject(workspace,
@@ -117,6 +118,8 @@ public class DatingProjectView implements ChartMouseListener {
 
 		this.project = incomingProject;
 
+		this.projectUndoContext = new ObjectUndoContext(project);
+		
 		ctx.set(DatingProject.class, incomingProject);
 		ctx.getParent().remove(DatingProject.class);
 
@@ -249,8 +252,7 @@ public class DatingProjectView implements ChartMouseListener {
 
 					// try {
 					AddDepthMarkerHandler.addDepthMarker(eventBroker,
-							undoContext, project.getChart(), xx,
-							ds.getYear(ds.getDepthIndex(xx)), true);
+							project.getChart(), xx, true);
 
 					// int insertionSpot = ds.insertDepth(xx);
 					//
@@ -278,7 +280,7 @@ public class DatingProjectView implements ChartMouseListener {
 
 					PopupUtil.showMenu(projectPartsList.get(0),
 							"edu.umaine.cs.icd2.popupmenu.chart", chartModel,
-							eventBroker, undoContext);
+							eventBroker);
 
 				}
 
@@ -561,7 +563,9 @@ public class DatingProjectView implements ChartMouseListener {
 	}
 
 	@Focus
-	public void setFocus() {
+	public void setFocus(IEclipseContext ectx) {
+		ectx.set(ObjectUndoContext.class, projectUndoContext);
+		logger.debug("Focus for {} ", this.project);
 		chartComposite.setFocus();
 	}
 
@@ -577,9 +581,9 @@ public class DatingProjectView implements ChartMouseListener {
 	/**
 	 * @param application
 	 * @param modelService
-	 * @param chart
-	 *            Whatever chart had its title changed. This may or may not be
-	 *            the chart associated with {@link DatingProjectView}.
+	 * @param chart        Whatever chart had its title changed. This may or may
+	 *                     not be the chart associated with
+	 *                     {@link DatingProjectView}.
 	 */
 	@Inject
 	@Optional
@@ -631,6 +635,13 @@ public class DatingProjectView implements ChartMouseListener {
 			EModelService modelService,
 			@UIEventTopic(CoreModelConstants.ICD2_MODEL_DATESESSION_DEPTH_REMOVE) DepthYear marker) {
 
+		if (!this.project.equals(marker.getParent().getParent())) {
+			logger.debug(
+					"Dating projects do not equal and will be skipped {} != {}.",
+					this.project, marker.getParent().getParent());
+			return;
+		}
+
 		logger.debug("Remove marker occurred {}. Refreshing charts.", marker);
 
 		IceCombinedDomainXYPlot plot = (IceCombinedDomainXYPlot) topCp
@@ -653,9 +664,16 @@ public class DatingProjectView implements ChartMouseListener {
 
 		DateSession ds = this.project.getChart().getActiveDateSession();
 
+		if (!this.project.equals(marker.getParent().getParent())) {
+			logger.debug(
+					"Dating projects do not equal and will be skipped {} != {}.",
+					this.project, marker.getParent().getParent());
+			return;
+		}
+
 		int index = ds.getDepthIndex(marker.getDepth());
 
-		logger.debug("Marker info {}", marker);
+		logger.debug("Marker info {} at index {}", marker, index);
 
 		JFreeUtil.addYearMarker(this.project.getChart(), topCp.getChart(),
 				marker.getDepth(), index, true);

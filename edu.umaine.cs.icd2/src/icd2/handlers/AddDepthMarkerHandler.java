@@ -8,6 +8,7 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.operations.AbstractOperation;
 import org.eclipse.core.commands.operations.IOperationHistory;
 import org.eclipse.core.commands.operations.IUndoContext;
+import org.eclipse.core.commands.operations.ObjectUndoContext;
 import org.eclipse.core.commands.operations.OperationHistoryFactory;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -16,6 +17,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
+import org.eclipse.e4.ui.di.UISynchronize;
+import org.eclipse.e4.ui.workbench.UIEvents;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
@@ -36,7 +39,8 @@ public class AddDepthMarkerHandler {
 
 	@Execute
 	public void execute(Shell shell, IEventBroker eventBroker, IUndoContext ctx,
-			@Named(CoreModelConstants.TREE_ITEM_SELECTION) @Optional DateSession session) {
+			@Named(CoreModelConstants.TREE_ITEM_SELECTION) @Optional DateSession session,
+			UISynchronize sync) {
 		logger.info("Adding a depth marker to {}.", session.getName());
 
 		Chart chart = session.getParent().getChart();
@@ -46,7 +50,7 @@ public class AddDepthMarkerHandler {
 
 		InputDialog dlg = new InputDialog(shell, "Year depth?",
 				"Please enter the depth of the new marker.",
-				String.format("%.2f",ds.getMean()), new IInputValidator() {
+				String.format("%.2f", ds.getMean()), new IInputValidator() {
 					@Override
 					public String isValid(String value) {
 						try {
@@ -68,23 +72,24 @@ public class AddDepthMarkerHandler {
 
 			double depth = Double.parseDouble(dlg.getValue());
 
-			int year = session.getYear(session.getDepthIndex(depth));
+			addDepthMarker(eventBroker, chart, depth, true);
 
-			addDepthMarker(eventBroker, ctx, chart, depth, year, true);
-
+			// It appears async is required because of the dialog window
+			sync.asyncExec(() -> {
+				eventBroker.send(CoreModelConstants.DISPLAY_PROJECT_EVENT,
+						chart.getParent());
+			});
 		}
 
 	}
 
 	public static void addDepthMarker(IEventBroker eventBroker,
-			IUndoContext ctx, Chart chartModel, double depth, int year,
-			boolean notify) {
+			Chart chartModel, double depth, boolean notify) {
 
 		DateSession ds = chartModel.getActiveDateSession();
-		DepthYear dy = new DepthYear(ds, depth, year);
 
 		AbstractOperation ao = new AbstractOperation(
-				"Add Depth Marker - " + dy) {
+				String.format("Add Depth Marker - %.2f", depth)) {
 
 			private DepthYear dy;
 
@@ -94,7 +99,7 @@ public class AddDepthMarkerHandler {
 
 				try {
 
-					ds.removeYearDepth(year);
+					ds.removeYearDepth(dy.getYear());
 					logger.debug("Depth year removed {}.", dy);
 
 					if (notify) {
@@ -104,6 +109,7 @@ public class AddDepthMarkerHandler {
 					}
 
 				} catch (DateSessionException e) {
+					e.printStackTrace();
 					logger.debug("Unable to remove date session top year.", dy);
 				}
 
@@ -149,13 +155,15 @@ public class AddDepthMarkerHandler {
 
 		};
 
-		ao.addContext(ctx);
+		ao.addContext(new ObjectUndoContext(chartModel.getParent()));
 
 		IOperationHistory operationHistory = OperationHistoryFactory
 				.getOperationHistory();
 
 		try {
 			operationHistory.execute(ao, null, null);
+			eventBroker.send(UIEvents.REQUEST_ENABLEMENT_UPDATE_TOPIC,
+					UIEvents.ALL_ELEMENT_ID);
 		} catch (ExecutionException e) {
 			logger.error("Failed to execute add depth marker.", e);
 		}
