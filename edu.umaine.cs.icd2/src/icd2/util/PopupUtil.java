@@ -102,7 +102,7 @@ public class PopupUtil {
 							public void run() {
 								if (!isMacOs)
 									useForPopups.dispose();
-								if (!active.isDisposed())
+								if (active != null && !active.isDisposed())
 									active.setActive();
 								logger.debug("Popup menu hidden");
 							}
@@ -120,7 +120,7 @@ public class PopupUtil {
 						// A show event occurred. Make sure that the menu is visible.
 						Runnable r = new Runnable() {
 							public void run() {
-								if (!menu.isVisible() && attempts < MAX_ATTEMPTS) {
+								if (!menu.isDisposed() && !menu.isVisible() && attempts < MAX_ATTEMPTS) {
 									menu.setVisible(true);
 									logger.debug("Made popup menu visible");
 									attempts++;
@@ -131,14 +131,14 @@ public class PopupUtil {
 									} catch (InterruptedException e) {
 										e.printStackTrace();
 									}
-								} else if (menu.isVisible()) {
+								} else if (!menu.isDisposed() && menu.isVisible()) {
 									logger.debug("Menu is already visible. It took {} attempts.", attempts);
 								} else {
 									logger.debug("Attempted to make popup visible {} times, "
 											+ "and it's still not visible. Giving up.", attempts);
 									if (!isMacOs)
 										useForPopups.dispose();
-									if (!active.isDisposed())
+									if (active != null && !active.isDisposed())
 										active.setActive();
 								}
 							}
