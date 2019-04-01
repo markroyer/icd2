@@ -170,6 +170,7 @@ public class DatingProjectView implements ChartMouseListener {
 					s.dispose();
 					
 					original.setActive();
+					setFocus(ctx);
 				});
 			}
 
