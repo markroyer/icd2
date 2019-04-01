@@ -141,7 +141,8 @@ public class AddDepthMarkerHandler {
 
 					}
 				} catch (DateSessionException e) {
-					logger.error("Invalid date depth {}.", depth, e);
+					logger.debug("Invalid date depth {}.", depth);
+					return Status.CANCEL_STATUS;
 				}
 
 				return Status.OK_STATUS;
