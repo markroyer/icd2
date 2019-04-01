@@ -32,6 +32,9 @@ import org.eclipse.swt.awt.SWT_AWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.Shell;
 import org.jfree.chart.ChartMouseEvent;
 import org.jfree.chart.ChartMouseListener;
 import org.jfree.chart.ChartPanel;
@@ -108,7 +111,7 @@ public class DatingProjectView implements ChartMouseListener {
 			Workspace workspace, EMenuService menuService,
 			EModelService modelService, MApplication application,
 			IEventBroker eventBroker) throws ObjectNotFound {
-
+		
 		if (incomingProject == null) {
 			incomingProject = WorkspaceUtil.getProject(workspace,
 					mpart.getLabel());
@@ -144,11 +147,30 @@ public class DatingProjectView implements ChartMouseListener {
 		topCp.setMaximumDrawWidth(1920);
 		topCp.setMaximumDrawHeight(1080);
 
+		Shell original = Display.getDefault().getActiveShell();
+		
 		topCp.addMouseListener(new MouseListener() {
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				// Ignore
+				Display d = Display.getDefault();
+				
+				// TODO this is a super weird hack to make sure the main window regains focus.
+				d.asyncExec(()->{
+				
+					Shell s = new Shell(d, SWT.NO_TRIM | SWT.ON_TOP);
+					s.setLocation(d.getCursorLocation());
+					s.setSize(0,0);
+					s.open();
+					
+					Menu m = new Menu(s);
+					
+					m.setVisible(true);
+					m.setVisible(false);
+					s.dispose();
+					
+					original.setActive();
+				});
 			}
 
 			@Override
