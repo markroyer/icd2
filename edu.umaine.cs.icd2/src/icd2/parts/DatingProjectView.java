@@ -2,6 +2,8 @@ package icd2.parts;
 
 import java.awt.Frame;
 import java.awt.Point;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.Point2D;
@@ -15,7 +17,10 @@ import javax.swing.SwingUtilities;
 
 import org.apache.commons.math3.analysis.interpolation.SplineInterpolator;
 import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.commands.operations.IOperationHistory;
 import org.eclipse.core.commands.operations.ObjectUndoContext;
+import org.eclipse.core.commands.operations.OperationHistoryFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
@@ -26,6 +31,7 @@ import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.MDirtyable;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.services.EMenuService;
+import org.eclipse.e4.ui.workbench.UIEvents;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
@@ -33,8 +39,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.Shell;
 import org.jfree.chart.ChartMouseEvent;
 import org.jfree.chart.ChartMouseListener;
 import org.jfree.chart.ChartPanel;
@@ -105,13 +109,14 @@ public class DatingProjectView implements ChartMouseListener {
 		yearMarkers = new ArrayList<>();
 	}
 
+
 	@PostConstruct
 	public void postConstruct(Composite parent, final IEclipseContext ctx,
 			@Optional DatingProject incomingProject, MPart mpart,
 			Workspace workspace, EMenuService menuService,
 			EModelService modelService, MApplication application,
 			IEventBroker eventBroker) throws ObjectNotFound {
-		
+
 		if (incomingProject == null) {
 			incomingProject = WorkspaceUtil.getProject(workspace,
 					mpart.getLabel());
@@ -122,7 +127,7 @@ public class DatingProjectView implements ChartMouseListener {
 		this.project = incomingProject;
 
 		this.projectUndoContext = new ObjectUndoContext(project);
-		
+
 		ctx.set(DatingProject.class, incomingProject);
 		ctx.getParent().remove(DatingProject.class);
 
@@ -147,29 +152,57 @@ public class DatingProjectView implements ChartMouseListener {
 		topCp.setMaximumDrawWidth(1920);
 		topCp.setMaximumDrawHeight(1080);
 
-		Shell original = Display.getDefault().getActiveShell();
-		
+		topCp.addKeyListener(new KeyAdapter() {
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+
+				Display d = Display.getDefault();
+
+				final int ctrlORshiftMasked = (e.getModifiersEx()
+						& (KeyEvent.CTRL_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK));
+
+				final boolean undo = e.getKeyCode() == KeyEvent.VK_Z
+						&& ctrlORshiftMasked == KeyEvent.CTRL_DOWN_MASK;
+				final boolean redo = e.getKeyCode() == KeyEvent.VK_Z
+						&& ctrlORshiftMasked == (KeyEvent.CTRL_DOWN_MASK
+								| KeyEvent.SHIFT_DOWN_MASK);
+
+				if (undo || redo) {
+					d.asyncExec(() -> {
+						IOperationHistory operationHistory = OperationHistoryFactory
+								.getOperationHistory();
+						try {
+							if (undo) {
+								operationHistory.undo(projectUndoContext, null,
+										null);
+							} else if (redo) {
+								operationHistory.redo(projectUndoContext, null,
+										null);
+							}
+							setFocus(ctx);
+							eventBroker.send(
+									UIEvents.REQUEST_ENABLEMENT_UPDATE_TOPIC,
+									UIEvents.ALL_ELEMENT_ID);
+						} catch (ExecutionException e1) {
+							e1.printStackTrace();
+						}
+					});
+				}
+
+			}
+		});
+
 		topCp.addMouseListener(new MouseListener() {
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
+				topCp.requestFocus();
 				Display d = Display.getDefault();
-				
-				// TODO this is a super weird hack to make sure the main window regains focus.
-				d.asyncExec(()->{
-				
-					Shell s = new Shell(d, SWT.NO_TRIM | SWT.ON_TOP);
-					s.setLocation(d.getCursorLocation());
-					s.setSize(0,0);
-					s.open();
-					
-					Menu m = new Menu(s);
-					
-					m.setVisible(true);
-					m.setVisible(false);
-					s.dispose();
-					
-					original.setActive();
+
+				// TODO this is a super weird hack to make sure the main window
+				// regains focus.
+				d.asyncExec(() -> {
 					setFocus(ctx);
 				});
 			}
@@ -590,6 +623,9 @@ public class DatingProjectView implements ChartMouseListener {
 		ectx.set(ObjectUndoContext.class, projectUndoContext);
 		logger.debug("Focus for {} ", this.project);
 		chartComposite.setFocus();
+		SwingUtilities.invokeLater(()->{
+			topCp.requestFocus();
+		});
 	}
 
 	@Persist
