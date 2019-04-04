@@ -4,8 +4,8 @@ import java.awt.Frame;
 import java.awt.Point;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -193,24 +193,7 @@ public class DatingProjectView implements ChartMouseListener {
 			}
 		});
 
-		topCp.addMouseListener(new MouseListener() {
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				topCp.requestFocus();
-				Display d = Display.getDefault();
-
-				// TODO this is a super weird hack to make sure the main window
-				// regains focus.
-				d.asyncExec(() -> {
-					setFocus(ctx);
-				});
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// Ignore
-			}
+		topCp.addMouseListener(new MouseAdapter() {
 
 			@Override
 			public void mouseExited(MouseEvent e) {
@@ -225,16 +208,6 @@ public class DatingProjectView implements ChartMouseListener {
 					p.setRangeCrosshairVisible(false);
 					p.setDomainCrosshairVisible(false);
 				}
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// Ignore
-			}
-
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				// Ignore
 			}
 		});
 
