@@ -35,6 +35,8 @@ import org.eclipse.e4.ui.workbench.UIEvents;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
+import org.eclipse.swt.browser.Browser;
+import org.eclipse.swt.browser.BrowserFunction;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -108,7 +110,7 @@ public class DatingProjectView implements ChartMouseListener {
 	public DatingProjectView() {
 		yearMarkers = new ArrayList<>();
 	}
-
+	static int i = 0;
 
 	@PostConstruct
 	public void postConstruct(Composite parent, final IEclipseContext ctx,
@@ -128,6 +130,31 @@ public class DatingProjectView implements ChartMouseListener {
 
 		this.projectUndoContext = new ObjectUndoContext(project);
 
+		
+//		Browser browser = new Browser(parent, SWT.NONE);
+//		
+//		browser.setUrl("/home/mroyer/Desktop/tmp/1182434-56001c031d17f99c5b37788cf53936f98919eeac/index.html");
+//		browser.setLayoutData(new GridData(GridData.FILL_BOTH));
+//		
+//		new BrowserFunction(browser, "keydownTest") {
+//
+//			@Override
+//			public Object function(Object[] arguments) {
+//				
+//				String pressedKey = (String)arguments[0];
+//				
+//				System.out.println("Pressed " + pressedKey + " " + (++i));
+//				
+//				return super.function(arguments);
+//			}
+//			
+//		};
+//		
+//		if (true)
+//			return;
+		
+		
+		
 		ctx.set(DatingProject.class, incomingProject);
 		ctx.getParent().remove(DatingProject.class);
 
